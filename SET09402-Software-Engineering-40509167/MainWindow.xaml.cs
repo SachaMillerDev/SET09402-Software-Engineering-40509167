@@ -1,9 +1,11 @@
 ﻿using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Controls;
 
 namespace SET09402_Software_Engineering_40509167
 {
@@ -12,38 +14,94 @@ namespace SET09402_Software_Engineering_40509167
         public MainWindow()
         {
             InitializeComponent();
+            emailRecipientInput.Visibility = Visibility.Collapsed;
+            emailSubjectInput.Visibility = Visibility.Collapsed;
         }
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
             string messageType = "";
-            if (smsRadioButton.IsChecked == true) messageType = "SMS:";
-            else if (emailRadioButton.IsChecked == true) messageType = "Email:";
-            else if (tweetRadioButton.IsChecked == true) messageType = "Tweet:";
+            string messageContent = "";
 
-            string messageContent = messageType + messageInput.Text;
+            if (smsRadioButton.IsChecked == true)
+            {
+                messageType = "SMS:";
+                messageContent = messageType + messageInput.Text;
+            }
+            else if (emailRadioButton.IsChecked == true)
+            {
+                messageType = "Email:";
+                messageContent = messageType + "Recipient: " + emailRecipientInput.Text + "; Subject: " + emailSubjectInput.Text + "; Body: " + messageInput.Text;
+            }
+            else if (tweetRadioButton.IsChecked == true)
+            {
+                messageType = "Tweet:";
+                messageContent = messageType + messageInput.Text;
+            }
 
-            // Store the message in a file
             File.AppendAllText("TestFile.txt", messageContent + Environment.NewLine);
-
-            // Process the message
             MessageProcessor processor = new MessageProcessor();
             MessageReader reader = new MessageReader("TestFile.txt");
             JSONOutput jsonOutput = new JSONOutput { OutputFile = "Output.json" };
-
             Message message = reader.ReadMessage();
             while (message != null)
             {
                 processor.AddMessage(message);
                 message = reader.ReadMessage();
             }
-
-            // Convert messages to JSON and save to OutputFile
             jsonOutput.SaveToJson(processor.Messages);
-
-            // Read the JSON output and display
             string jsonContent = File.ReadAllText("Output.json");
             outputTextBlock.Text = "Output: " + jsonContent;
+        }
+
+        private void SmsRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            emailRecipientInput.Visibility = Visibility.Collapsed;
+            emailSubjectInput.Visibility = Visibility.Collapsed;
+            messageInput.Text = "Text here";
+            messageInput.Foreground = Brushes.Gray;
+        }
+
+        private void EmailRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            emailRecipientInput.Visibility = Visibility.Visible;
+            emailSubjectInput.Visibility = Visibility.Visible;
+            messageInput.Text = "Body here";
+            messageInput.Foreground = Brushes.Gray;
+        }
+
+        private void TweetRadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            emailRecipientInput.Visibility = Visibility.Collapsed;
+            emailSubjectInput.Visibility = Visibility.Collapsed;
+            messageInput.Text = "Text here";
+            messageInput.Foreground = Brushes.Gray;
+        }
+
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+            if (tb.Text == "Text here" || tb.Text == "Recipient" || tb.Text == "Subject")
+            {
+                tb.Text = "";
+                tb.Foreground = Brushes.Black;
+            }
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            TextBox tb = sender as TextBox;
+            if (string.IsNullOrWhiteSpace(tb.Text))
+            {
+                if (tb == messageInput)
+                    tb.Text = "Text here";
+                else if (tb == emailRecipientInput)
+                    tb.Text = "Recipient";
+                else if (tb == emailSubjectInput)
+                    tb.Text = "Subject";
+
+                tb.Foreground = Brushes.Gray;
+            }
         }
     }
 
@@ -69,7 +127,6 @@ namespace SET09402_Software_Engineering_40509167
     {
         public string MessageID { get; set; }
         public string Body { get; set; }
-
         public abstract string DetectType();
         public abstract void Process();
     }
@@ -118,7 +175,6 @@ namespace SET09402_Software_Engineering_40509167
             Text = Text.Replace("ROFL", "<Rolls on the floor laughing>");
             Text = Text.Replace("OMG", "Oh My God");
             Text = Text.Replace("LOL", "Laughing Out Loud");
-            // Add more replacements as needed
         }
 
         public override void Process()
@@ -136,7 +192,6 @@ namespace SET09402_Software_Engineering_40509167
 
         public override void Process()
         {
-            // Add any specific processing for emails if needed
         }
     }
 
@@ -154,7 +209,6 @@ namespace SET09402_Software_Engineering_40509167
         public Message ReadMessage()
         {
             string line = reader.ReadLine();
-
             if (line != null)
             {
                 if (line.StartsWith("SMS:"))
@@ -163,16 +217,18 @@ namespace SET09402_Software_Engineering_40509167
                 }
                 else if (line.StartsWith("Email:"))
                 {
-                    // Example logic for reading Email messages
                     string[] parts = line.Substring(6).Split(';');
-                    return new EmailMessage { Subject = parts[0].Replace("Subject: ", "").Trim(), Body = parts[1].Replace("Body: ", "").Trim() };
+                    return new EmailMessage
+                    {
+                        Subject = parts[0].Replace("Subject: ", "").Trim(),
+                        Body = parts[1].Replace("Body: ", "").Trim()
+                    };
                 }
                 else if (line.StartsWith("Tweet:"))
                 {
                     return new TweetMessage { Content = line.Substring(6) };
                 }
             }
-
             reader.Close();
             return null;
         }
