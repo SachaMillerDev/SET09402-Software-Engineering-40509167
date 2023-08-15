@@ -7,11 +7,10 @@
         <RadioButton x:Name="emailRadioButton" Content="Email" HorizontalAlignment="Left" Margin="10,35,0,0" VerticalAlignment="Top" Checked="EmailRadioButton_Checked" Width="100" Height="30" BorderThickness="5" FontSize="14"/>
         <RadioButton x:Name="tweetRadioButton" Content="Tweet" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Checked="TweetRadioButton_Checked" Width="100" Height="30" BorderThickness="5"  FontSize="14"/>
 
-
         <!-- Email specific input fields -->
         <TextBox x:Name="emailRecipientInput" HorizontalAlignment="Left" Height="23" Margin="10,110,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="480" Text="Recipient" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
         <TextBox x:Name="emailSubjectInput" HorizontalAlignment="Left" Height="23" Margin="10,140,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="480" Text="Subject" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
-        <TextBox x:Name="messageInput" HorizontalAlignment="Left" Height="100" Margin="10,170,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="480" Text="Text here" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
+        <TextBox x:Name="messageInput" HorizontalAlignment="Left" Height="100" Margin="10,170,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="480" Text="Body here" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
 
         <Button x:Name="sendButton" Content="Send" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="415,280,0,0" Click="SendButton_Click"/>
         <TextBlock x:Name="outputTextBlock" HorizontalAlignment="Left" Margin="10,320,0,0" TextWrapping="Wrap" Text="Output:" VerticalAlignment="Top" Width="480" Height="100"/>

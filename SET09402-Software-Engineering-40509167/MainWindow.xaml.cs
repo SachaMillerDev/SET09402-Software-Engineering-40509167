@@ -37,7 +37,6 @@ namespace SET09402_Software_Engineering_40509167
                 messageType = "Tweet:";
                 messageContent = messageType + messageInput.Text;
             }
-
             File.AppendAllText("TestFile.txt", messageContent + Environment.NewLine);
 
             MessageProcessor processor = new MessageProcessor();
@@ -52,7 +51,6 @@ namespace SET09402_Software_Engineering_40509167
             }
 
             jsonOutput.SaveToJson(processor.Messages);
-
             string jsonContent = File.ReadAllText("Output.json");
             outputTextBlock.Text = "Output: " + jsonContent;
         }
@@ -84,7 +82,7 @@ namespace SET09402_Software_Engineering_40509167
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
             TextBox tb = sender as TextBox;
-            if (tb.Text == "Text here" || tb.Text == "Recipient" || tb.Text == "Subject")
+            if (tb.Text == "Text here" || tb.Text == "Recipient" || tb.Text == "Subject" || tb.Text == "Body here")
             {
                 tb.Text = "";
                 tb.Foreground = Brushes.Black;
@@ -96,7 +94,8 @@ namespace SET09402_Software_Engineering_40509167
             TextBox tb = sender as TextBox;
             if (string.IsNullOrWhiteSpace(tb.Text))
             {
-                if (tb == messageInput) tb.Text = "Text here";
+                if (tb == messageInput && emailRadioButton.IsChecked == true) tb.Text = "Body here";
+                else if (tb == messageInput) tb.Text = "Text here";
                 else if (tb == emailRecipientInput) tb.Text = "Recipient";
                 else if (tb == emailSubjectInput) tb.Text = "Subject";
                 tb.Foreground = Brushes.Gray;
@@ -184,14 +183,25 @@ namespace SET09402_Software_Engineering_40509167
 
     public class EmailMessage : Message
     {
-        public string Subject { get; set; }
         public string SenderEmail { get; set; }
+        public string Subject { get; set; }
+        public string Text { get; set; }
+        public List<string> QuarantineList { get; set; } = new List<string>();
 
         public override string DetectType() => "Email";
 
+        public void RemoveURLs()
+        {
+            foreach (Match match in Regex.Matches(Text, @"https?:"))
+            {
+                QuarantineList.Add(match.Value);
+                Text = Text.Replace(match.Value, "<URL Quarantined>");
+            }
+        }
+
         public override void Process()
         {
-            // You can add any specific processing for Email messages here.
+            RemoveURLs();
         }
     }
 
