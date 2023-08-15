@@ -28,6 +28,7 @@ public class TweetMessage : Message
 
     public override void Process()
     {
+        Content = ExpandTextspeak(Content);
         ProcessHashtags();
         ProcessTwitterIDs();
     }
