@@ -1,12 +1,15 @@
 ﻿<Window x:Class="SET09402_Software_Engineering_40509167.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SET09402_Software_Engineering_40509167"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Message Processor" Height="350" Width="525">
     <Grid>
+        <RadioButton x:Name="smsRadioButton" Content="SMS" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="emailRadioButton" Content="Email" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top"/>
+        <RadioButton x:Name="tweetRadioButton" Content="Tweet" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top"/>
 
+        <TextBox x:Name="messageInput" HorizontalAlignment="Left" Height="100" Margin="10,110,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="480"/>
+        <Button x:Name="sendButton" Content="Send" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="415,220,0,0" Click="SendButton_Click"/>
+
+        <TextBlock x:Name="outputTextBlock" HorizontalAlignment="Left" Margin="10,260,0,0" TextWrapping="Wrap" Text="Output:" VerticalAlignment="Top" Width="480"/>
     </Grid>
 </Window>
