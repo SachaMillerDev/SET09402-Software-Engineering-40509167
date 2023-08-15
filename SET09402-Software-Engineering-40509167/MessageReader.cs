@@ -6,7 +6,7 @@ public class MessageReader
     public string InputFile { get; set; }
     private StreamReader reader;
 
-    public MessageReader(string inputFile) // Constructor that takes the input file path
+    public MessageReader(string inputFile)
     {
         InputFile = inputFile;
         reader = new StreamReader(InputFile);
@@ -15,7 +15,6 @@ public class MessageReader
     public Message ReadMessage()
     {
         string line = reader.ReadLine();
-
         if (line != null)
         {
             if (line.StartsWith("SMS:"))
@@ -24,17 +23,27 @@ public class MessageReader
             }
             else if (line.StartsWith("Email:"))
             {
-                return new EmailMessage { Text = line.Substring(6) };
+                string[] parts = line.Substring(6).Split(';');
+                if (parts.Length >= 2)
+                {
+                    return new EmailMessage
+                    {
+                        Subject = parts[0].Replace("Subject: ", "").Trim(),
+                        Body = parts[1].Replace("Body: ", "").Trim()
+                    };
+                }
+                else
+                {
+                    // Handle the error or return a default value
+                    return null;
+                }
             }
             else if (line.StartsWith("Tweet:"))
             {
                 return new TweetMessage { Content = line.Substring(6) };
             }
         }
-
-        reader.Close(); // Close the reader if no more messages
-        return null; // Return null if no more messages
+        reader.Close();
+        return null;
     }
-
 }
-
