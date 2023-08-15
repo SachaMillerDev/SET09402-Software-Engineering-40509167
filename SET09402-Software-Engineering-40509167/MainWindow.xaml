@@ -28,8 +28,9 @@
 
         <!-- Output window -->
         <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto">
-            <TextBlock x:Name="outputTextBlock" Text="Output:"/>
+            <TextBlock x:Name="outputTextBlock" Text="Output:" MaxWidth="400" TextWrapping="Wrap"/>
         </ScrollViewer>
+
 
         <!-- Key with list of text fields -->
         <StackPanel Grid.Column="3">

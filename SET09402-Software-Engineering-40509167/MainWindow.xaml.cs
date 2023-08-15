@@ -44,8 +44,6 @@ namespace SET09402_Software_Engineering_40509167
             MessageProcessor processor = new MessageProcessor();
             MessageReader reader = new MessageReader("TestFile.txt");
             JSONOutput jsonOutput = new JSONOutput { OutputFile = "Output.json" };
-            jsonOutput.WriteToJSON(processor.Messages);
-
 
             Message message = reader.ReadMessage();
             while (message != null)
@@ -60,6 +58,7 @@ namespace SET09402_Software_Engineering_40509167
             string newOutput = "New Message: " + jsonContent;
             outputTextBlock.Text = newOutput + "\n\n" + outputTextBlock.Text;
         }
+
 
         private void SmsRadioButton_Checked(object sender, RoutedEventArgs e)
         {
