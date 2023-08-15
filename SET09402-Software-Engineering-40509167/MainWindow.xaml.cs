@@ -44,6 +44,8 @@ namespace SET09402_Software_Engineering_40509167
             MessageProcessor processor = new MessageProcessor();
             MessageReader reader = new MessageReader("TestFile.txt");
             JSONOutput jsonOutput = new JSONOutput { OutputFile = "Output.json" };
+            jsonOutput.WriteToJSON(processor.Messages);
+
 
             Message message = reader.ReadMessage();
             while (message != null)

@@ -20,9 +20,9 @@
 
         <!-- Input fields -->
         <StackPanel Grid.Column="1">
-            <TextBox x:Name="emailRecipientInput" Text="Recipient"/>
-            <TextBox x:Name="emailSubjectInput" Text="Subject"/>
-            <TextBox x:Name="messageInput" Text="Body here" Height="289" TextWrapping="Wrap"/>
+            <TextBox x:Name="emailRecipientInput" Text="Recipient" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
+            <TextBox x:Name="emailSubjectInput" Text="Subject" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
+            <TextBox x:Name="messageInput" Text="Body here" Height="289" TextWrapping="Wrap" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus"/>
             <Button x:Name="sendButton" Content="Send" Click="SendButton_Click" Height="71"/>
         </StackPanel>
 
