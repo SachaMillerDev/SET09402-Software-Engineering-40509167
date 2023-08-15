@@ -12,7 +12,7 @@ public class EmailMessage : Message
 
     public void RemoveURLs()
     {
-        foreach (Match match in Regex.Matches(Text, @"https?://\S+"))
+        foreach (Match match in Regex.Matches(Text, @"https?:"))
         {
             QuarantineList.Add(match.Value);
             Text = Text.Replace(match.Value, "<URL Quarantined>");

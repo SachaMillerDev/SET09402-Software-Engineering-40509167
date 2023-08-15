@@ -1,11 +1,11 @@
 ﻿using System;
-using System.IO;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Controls;
+using System.Windows.Media;
+using Newtonsoft.Json;
 
 namespace SET09402_Software_Engineering_40509167
 {
@@ -22,7 +22,6 @@ namespace SET09402_Software_Engineering_40509167
         {
             string messageType = "";
             string messageContent = "";
-
             if (smsRadioButton.IsChecked == true)
             {
                 messageType = "SMS:";
@@ -40,16 +39,20 @@ namespace SET09402_Software_Engineering_40509167
             }
 
             File.AppendAllText("TestFile.txt", messageContent + Environment.NewLine);
+
             MessageProcessor processor = new MessageProcessor();
             MessageReader reader = new MessageReader("TestFile.txt");
             JSONOutput jsonOutput = new JSONOutput { OutputFile = "Output.json" };
+
             Message message = reader.ReadMessage();
             while (message != null)
             {
                 processor.AddMessage(message);
                 message = reader.ReadMessage();
             }
+
             jsonOutput.SaveToJson(processor.Messages);
+
             string jsonContent = File.ReadAllText("Output.json");
             outputTextBlock.Text = "Output: " + jsonContent;
         }
@@ -93,13 +96,9 @@ namespace SET09402_Software_Engineering_40509167
             TextBox tb = sender as TextBox;
             if (string.IsNullOrWhiteSpace(tb.Text))
             {
-                if (tb == messageInput)
-                    tb.Text = "Text here";
-                else if (tb == emailRecipientInput)
-                    tb.Text = "Recipient";
-                else if (tb == emailSubjectInput)
-                    tb.Text = "Subject";
-
+                if (tb == messageInput) tb.Text = "Text here";
+                else if (tb == emailRecipientInput) tb.Text = "Recipient";
+                else if (tb == emailSubjectInput) tb.Text = "Subject";
                 tb.Foreground = Brushes.Gray;
             }
         }
@@ -192,6 +191,7 @@ namespace SET09402_Software_Engineering_40509167
 
         public override void Process()
         {
+            // You can add any specific processing for Email messages here.
         }
     }
 
@@ -218,11 +218,18 @@ namespace SET09402_Software_Engineering_40509167
                 else if (line.StartsWith("Email:"))
                 {
                     string[] parts = line.Substring(6).Split(';');
-                    return new EmailMessage
+                    if (parts.Length >= 2)
                     {
-                        Subject = parts[0].Replace("Subject: ", "").Trim(),
-                        Body = parts[1].Replace("Body: ", "").Trim()
-                    };
+                        return new EmailMessage
+                        {
+                            Subject = parts[0].Replace("Subject: ", "").Trim(),
+                            Body = parts[1].Replace("Body: ", "").Trim()
+                        };
+                    }
+                    else
+                    {
+                        return null;
+                    }
                 }
                 else if (line.StartsWith("Tweet:"))
                 {

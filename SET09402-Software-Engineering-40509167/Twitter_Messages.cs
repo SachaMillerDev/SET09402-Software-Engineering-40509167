@@ -1,12 +1,10 @@
-﻿using static System.Net.Mime.MediaTypeNames;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
-
 
 public class TweetMessage : Message
 {
     public string TwitterID { get; set; }
-    public string Content { get; set; } // Renamed from "Text" to "Content"
+    public string Content { get; set; }
     public List<string> Hashtags { get; set; } = new List<string>();
     public List<string> MentionedTwitterIDs { get; set; } = new List<string>();
 
@@ -34,5 +32,3 @@ public class TweetMessage : Message
         ProcessTwitterIDs();
     }
 }
-
-
