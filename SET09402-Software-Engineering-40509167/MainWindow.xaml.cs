@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using Newtonsoft.Json;
+using System;
+using System.IO;
+using Microsoft.Win32;
 
 namespace SET09402_Software_Engineering_40509167
 {
@@ -57,6 +58,16 @@ namespace SET09402_Software_Engineering_40509167
 
             string newOutput = "New Message: " + jsonContent;
             outputTextBlock.Text = newOutput + "\n\n" + outputTextBlock.Text;
+        }
+
+        private void LoadFromFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string fileContent = File.ReadAllText(openFileDialog.FileName);
+                // Process the fileContent as you would with manual input
+            }
         }
 
 

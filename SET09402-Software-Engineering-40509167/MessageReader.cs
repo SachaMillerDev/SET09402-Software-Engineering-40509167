@@ -23,6 +23,7 @@ public class MessageReader
             }
             else if (line.StartsWith("Email:"))
             {
+                {
                 string[] parts = line.Substring(6).Split(';');
                 if (parts.Length >= 2)
                 {
@@ -37,6 +38,7 @@ public class MessageReader
                     // Handle the error or return a default value
                     return null;
                 }
+            }
             }
             else if (line.StartsWith("Tweet:"))
             {
