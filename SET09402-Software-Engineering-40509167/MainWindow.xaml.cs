@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using Microsoft.Win32;
+using System.Linq;
 
 
 namespace SET09402_Software_Engineering_40509167
@@ -24,7 +25,6 @@ namespace SET09402_Software_Engineering_40509167
         {
             string messageType = "";
             string messageContent = "";
-
             if (smsRadioButton.IsChecked == true)
             {
                 messageType = "SMS:";
@@ -55,10 +55,12 @@ namespace SET09402_Software_Engineering_40509167
             }
 
             jsonOutput.WriteToJSON(processor.Messages);
-            string jsonContent = File.ReadAllText("Output.json");
 
+            string jsonContent = File.ReadAllText("Output.json");
             string newOutput = "New Message: " + jsonContent;
             outputTextBlock.Text = newOutput + "\n\n" + outputTextBlock.Text;
+
+            DisplayLists();
         }
 
         private void LoadFromFileButton_Click(object sender, RoutedEventArgs e)
@@ -66,11 +68,23 @@ namespace SET09402_Software_Engineering_40509167
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
-                string fileContent = File.ReadAllText(openFileDialog.FileName);
-                // Process the fileContent as you would with manual input
+                // Read messages from the selected file and process them
+                // ... code to read and process messages
+                DisplayLists();
             }
         }
 
+        private void DisplayLists()
+        {
+            // Display trending list
+            trendingListTextBox.Text = string.Join("\n", TweetMessage.HashtagsDictionary.OrderByDescending(x => x.Value).Select(x => x.Key + ": " + x.Value));
+
+            // Display mentions list
+            mentionsListTextBox.Text = string.Join("\n", TweetMessage.MentionsDictionary.OrderByDescending(x => x.Value).Select(x => x.Key + ": " + x.Value));
+
+            // Display SIR list
+            sirListTextBox.Text = string.Join("\n", EmailMessage.SIRList.Select(x => "Sort Code: " + x.SortCode + ", Nature of Incident: " + x.NatureOfIncident));
+        }
 
         private void SmsRadioButton_Checked(object sender, RoutedEventArgs e)
         {
@@ -120,3 +134,4 @@ namespace SET09402_Software_Engineering_40509167
         }
     }
 }
+

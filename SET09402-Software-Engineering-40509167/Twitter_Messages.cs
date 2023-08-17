@@ -2,7 +2,6 @@
 using System.Text.RegularExpressions;
 using System;
 
-
 public class TweetMessage : Message
 {
     public string TwitterID { get; set; }
@@ -10,8 +9,8 @@ public class TweetMessage : Message
     public List<string> Hashtags { get; set; } = new List<string>();
     public List<string> MentionedTwitterIDs { get; set; } = new List<string>();
 
-    Dictionary<string, int> hashtagsDictionary = new Dictionary<string, int>();
-    Dictionary<string, int> mentionsDictionary = new Dictionary<string, int>();
+    public static Dictionary<string, int> HashtagsDictionary = new Dictionary<string, int>();
+    public static Dictionary<string, int> MentionsDictionary = new Dictionary<string, int>();
 
     public override string DetectType() => "Tweet";
 
@@ -35,24 +34,24 @@ public class TweetMessage : Message
     {
         foreach (var hashtag in Hashtags)
         {
-            if (hashtagsDictionary.ContainsKey(hashtag))
+            if (HashtagsDictionary.ContainsKey(hashtag))
             {
-                hashtagsDictionary[hashtag]++;
+                HashtagsDictionary[hashtag]++;
             }
             else
             {
-                hashtagsDictionary.Add(hashtag, 1);
+                HashtagsDictionary.Add(hashtag, 1);
             }
         }
         foreach (var mention in MentionedTwitterIDs)
         {
-            if (mentionsDictionary.ContainsKey(mention))
+            if (MentionsDictionary.ContainsKey(mention))
             {
-                mentionsDictionary[mention]++;
+                MentionsDictionary[mention]++;
             }
             else
             {
-                mentionsDictionary.Add(mention, 1);
+                MentionsDictionary.Add(mention, 1);
             }
         }
     }
@@ -62,5 +61,6 @@ public class TweetMessage : Message
         Content = ExpandTextspeak(Content);
         ProcessHashtags();
         ProcessTwitterIDs();
+        UpdateHashtagsAndMentions();
     }
 }
