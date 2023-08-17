@@ -1,7 +1,7 @@
 ﻿<Window x:Class="SET09402_Software_Engineering_40509167.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Napier Bank Messaging" Height="600" Width="1000">
+        Title="Napier Bank Messaging" Height="600" Width="1168">
 
     <Grid Margin="10">
         <!-- Define the 4 columns -->
@@ -59,7 +59,7 @@
 
         <!-- UI elements for displaying the lists -->
         <GroupBox Header="Trending Hashtags" Grid.Column="3" Grid.Row="0" Margin="10">
-            <ListBox x:Name="trendingHashtagsList" />
+            <ListBox x:Name="trendingHashtagsList" RenderTransformOrigin="-0.693,0.52" />
         </GroupBox>
 
         <GroupBox Header="Mentions" Grid.Column="3" Grid.Row="1" Margin="10">
