@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -66,20 +65,20 @@ namespace SET09402_Software_Engineering_40509167
 
         private void DisplayLists()
         {
-            trendingHashtagsList.Items.Clear();
+            TrendingList.Items.Clear();
             foreach (var item in TweetMessage.HashtagsDictionary.OrderByDescending(x => x.Value))
             {
-                trendingHashtagsList.Items.Add(item.Key + ": " + item.Value);
+                TrendingList.Items.Add(item.Key + ": " + item.Value);
             }
-            mentionsList.Items.Clear();
+            MentionsList.Items.Clear();
             foreach (var item in TweetMessage.MentionsDictionary.OrderByDescending(x => x.Value))
             {
-                mentionsList.Items.Add(item.Key + ": " + item.Value);
+                MentionsList.Items.Add(item.Key + ": " + item.Value);
             }
-            sirList.Items.Clear();
+            SIRList.Items.Clear();
             foreach (var item in EmailMessage.SIRList)
             {
-                sirList.Items.Add("Sort Code: " + item.SortCode + ", Nature of Incident: " + item.NatureOfIncident);
+                SIRList.Items.Add("Sort Code: " + item.SortCode + ", Nature of Incident: " + item.NatureOfIncident);
             }
         }
 
