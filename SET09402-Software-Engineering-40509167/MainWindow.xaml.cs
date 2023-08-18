@@ -76,15 +76,28 @@ namespace SET09402_Software_Engineering_40509167
 
         private void DisplayLists()
         {
-            // Display trending list
-            trendingListTextBox.Text = string.Join("\n", TweetMessage.HashtagsDictionary.OrderByDescending(x => x.Value).Select(x => x.Key + ": " + x.Value));
+            // Update trending hashtags list
+            trendingHashtagsList.Items.Clear();
+            foreach (var item in TweetMessage.HashtagsDictionary.OrderByDescending(x => x.Value))
+            {
+                trendingHashtagsList.Items.Add(item.Key + ": " + item.Value);
+            }
 
-            // Display mentions list
-            mentionsListTextBox.Text = string.Join("\n", TweetMessage.MentionsDictionary.OrderByDescending(x => x.Value).Select(x => x.Key + ": " + x.Value));
+            // Update mentions list
+            mentionsList.Items.Clear();
+            foreach (var item in TweetMessage.MentionsDictionary.OrderByDescending(x => x.Value))
+            {
+                mentionsList.Items.Add(item.Key + ": " + item.Value);
+            }
 
-            // Display SIR list
-            sirListTextBox.Text = string.Join("\n", EmailMessage.SIRList.Select(x => "Sort Code: " + x.SortCode + ", Nature of Incident: " + x.NatureOfIncident));
+            // Update SIR list
+            sirList.Items.Clear();
+            foreach (var item in EmailMessage.SIRList)
+            {
+                sirList.Items.Add("Sort Code: " + item.SortCode + ", Nature of Incident: " + item.NatureOfIncident);
+            }
         }
+
 
         private void SmsRadioButton_Checked(object sender, RoutedEventArgs e)
         {
