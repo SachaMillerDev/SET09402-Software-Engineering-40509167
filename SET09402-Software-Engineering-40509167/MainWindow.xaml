@@ -1,51 +1,46 @@
 ﻿<Window x:Class="SET09402_Software_Engineering_40509167.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Napier Bank Messaging" Height="600" Width="1168">
+        Title="Napier Bank Messaging" Height="600" Width="1000">
 
     <Grid Margin="10">
-        <!-- Define the columns and rows -->
+        <!-- Define the 4 columns -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
             <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
+
+        <!-- Define rows for lists -->
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Message Type Selectors -->
-        <GroupBox Grid.Column="0" Header="Message Type" Margin="10">
-            <StackPanel>
-                <RadioButton x:Name="smsRadioButton" Content="SMS" Checked="SmsRadioButton_Checked" Margin="0,0,0,10"/>
-                <RadioButton x:Name="emailRadioButton" Content="Email" Checked="EmailRadioButton_Checked" Margin="0,0,0,10"/>
-                <RadioButton x:Name="tweetRadioButton" Content="Tweet" Checked="TweetRadioButton_Checked" Margin="0,0,0,10"/>
-            </StackPanel>
-        </GroupBox>
+        <!-- Selectors for input -->
+        <StackPanel Grid.Column="0" Margin="10">
+            <RadioButton x:Name="smsRadioButton" Content="SMS" Checked="SmsRadioButton_Checked" Margin="0,0,0,10"/>
+            <RadioButton x:Name="emailRadioButton" Content="Email" Checked="EmailRadioButton_Checked" Margin="0,0,0,10"/>
+            <RadioButton x:Name="tweetRadioButton" Content="Tweet" Checked="TweetRadioButton_Checked" Margin="0,0,0,10"/>
+        </StackPanel>
 
-        <!-- Message Input Fields -->
-        <GroupBox Grid.Column="1" Header="Message Input" Margin="10">
-            <StackPanel>
-                <TextBox x:Name="emailRecipientInput" Text="Recipient" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Margin="0,0,0,10"/>
-                <TextBox x:Name="emailSubjectInput" Text="Subject" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Margin="0,0,0,10"/>
-                <TextBox x:Name="messageInput" Text="Body here" Height="321" TextWrapping="Wrap" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Margin="0,0,0,10"/>
-                <Button x:Name="sendButton" Content="Send" Click="SendButton_Click" Height="40"/>
-            </StackPanel>
-        </GroupBox>
+        <!-- Input fields -->
+        <StackPanel Grid.Column="1" Margin="10">
+            <TextBox x:Name="emailRecipientInput" Text="Recipient" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Margin="0,0,0,10"/>
+            <TextBox x:Name="emailSubjectInput" Text="Subject" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Margin="0,0,0,10"/>
+            <TextBox x:Name="messageInput" Text="Body here" Height="289" TextWrapping="Wrap" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Margin="0,0,0,10"/>
+            <Button x:Name="sendButton" Content="Send" Click="SendButton_Click" Height="40"/>
+        </StackPanel>
 
-        <!-- Output Window -->
-        <GroupBox Grid.Column="2" Header="Output" Margin="10">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <TextBlock x:Name="outputTextBlock" Text="Output:" MaxWidth="400" TextWrapping="Wrap"/>
-            </ScrollViewer>
-        </GroupBox>
-
-        <!-- Lists of Text Fields -->
-        <GroupBox Grid.Column="4" Header="Lists" Margin="10">
+        <!-- Output window -->
+        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" Margin="10">
+            <TextBlock x:Name="outputTextBlock" Text="Output:" MaxWidth="400" TextWrapping="Wrap"/>
+        </ScrollViewer>
+        
+        <!-- Column 3: Lists (Trending, Mentions, SIR) -->
+        <GroupBox Grid.Column="3" Header="Lists">
             <TabControl Margin="10">
                 <TabItem Header="Trending">
                     <ListBox Name="TrendingList"/>
@@ -59,21 +54,5 @@
             </TabControl>
         </GroupBox>
 
-        <!-- Nature of Incident -->
-        <GroupBox Grid.Column="3" Header="Nature of Incident" Margin="10">
-            <StackPanel>
-                <TextBlock Text="0-Theft"/>
-                <TextBlock Text="1-Staff Attack"/>
-                <TextBlock Text="2-ATM Theft"/>
-                <TextBlock Text="3-Raid"/>
-                <TextBlock Text="4-Customer Attack" Margin="0,5,0,5"/>
-                <TextBlock Text="5-Staff Abuse" Margin="0,5,0,5"/>
-                <TextBlock Text="6-Bomb Threat" Margin="0,5,0,5"/>
-                <TextBlock Text="7-Terrorism" Margin="0,5,0,5"/>
-                <TextBlock Text="8-Suspicious Incident" Margin="0,5,0,5"/>
-                <TextBlock Text="9-Intelligence" Margin="0,5,0,5"/>
-                <TextBlock Text="10-Cash Loss" Margin="0,5,0,5"/>
-            </StackPanel>
-        </GroupBox>
     </Grid>
 </Window>
