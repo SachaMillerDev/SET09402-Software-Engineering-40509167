@@ -31,6 +31,25 @@
             <TextBox x:Name="emailRecipientInput" Text="Recipient" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Margin="0,0,0,10"/>
             <TextBox x:Name="emailSubjectInput" Text="Subject" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Margin="0,0,0,10"/>
             <TextBox x:Name="messageInput" Text="Body here" Height="289" TextWrapping="Wrap" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Margin="0,0,0,10"/>
+
+            <!-- Checkbox for selecting incident type -->
+            <CheckBox x:Name="incidentCheckBox" Content="Select Incident Type" Margin="0,10,0,10" Checked="IncidentCheckBox_Checked" Unchecked="IncidentCheckBox_Unchecked"/>
+
+            <!-- Dropdown for incident types -->
+            <ComboBox x:Name="incidentComboBox" Margin="0,0,0,10" Visibility="Collapsed">
+                <ComboBoxItem Content="Theft"/>
+                <ComboBoxItem Content="Staff Attack"/>
+                <ComboBoxItem Content="ATM Theft"/>
+                <ComboBoxItem Content="Raid"/>
+                <ComboBoxItem Content="Customer Attack"/>
+                <ComboBoxItem Content="Staff Abuse"/>
+                <ComboBoxItem Content="Bomb Threat"/>
+                <ComboBoxItem Content="Terrorism"/>
+                <ComboBoxItem Content="Suspicious Incident"/>
+                <ComboBoxItem Content="Intelligence"/>
+                <ComboBoxItem Content="Cash Loss"/>
+            </ComboBox>
+
             <Button x:Name="sendButton" Content="Send" Click="SendButton_Click" Height="40"/>
         </StackPanel>
 
@@ -38,7 +57,7 @@
         <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" Margin="10">
             <TextBlock x:Name="outputTextBlock" Text="Output:" MaxWidth="400" TextWrapping="Wrap"/>
         </ScrollViewer>
-        
+
         <!-- Column 3: Lists (Trending, Mentions, SIR) -->
         <GroupBox Grid.Column="3" Header="Lists">
             <TabControl Margin="10">
@@ -53,6 +72,5 @@
                 </TabItem>
             </TabControl>
         </GroupBox>
-
     </Grid>
 </Window>

@@ -1,14 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using Newtonsoft.Json;
-using System;
-using System.IO;
 using Microsoft.Win32;
-using System.Linq;
-
 
 namespace SET09402_Software_Engineering_40509167
 {
@@ -40,26 +38,20 @@ namespace SET09402_Software_Engineering_40509167
                 messageType = "Tweet:";
                 messageContent = messageType + messageInput.Text;
             }
-
             File.AppendAllText("TestFile.txt", messageContent + Environment.NewLine);
-
             MessageProcessor processor = new MessageProcessor();
             MessageReader reader = new MessageReader("TestFile.txt");
             JSONOutput jsonOutput = new JSONOutput { OutputFile = "Output.json" };
-
             Message message = reader.ReadMessage();
             while (message != null)
             {
                 processor.AddMessage(message);
                 message = reader.ReadMessage();
             }
-
             jsonOutput.WriteToJSON(processor.Messages);
-
             string jsonContent = File.ReadAllText("Output.json");
             string newOutput = "New Message: " + jsonContent;
             outputTextBlock.Text = newOutput + "\n\n" + outputTextBlock.Text;
-
             DisplayLists();
         }
 
@@ -68,36 +60,28 @@ namespace SET09402_Software_Engineering_40509167
             OpenFileDialog openFileDialog = new OpenFileDialog();
             if (openFileDialog.ShowDialog() == true)
             {
-                // Read messages from the selected file and process them
-                // ... code to read and process messages
                 DisplayLists();
             }
         }
 
         private void DisplayLists()
         {
-            // Update trending hashtags list
             trendingHashtagsList.Items.Clear();
             foreach (var item in TweetMessage.HashtagsDictionary.OrderByDescending(x => x.Value))
             {
                 trendingHashtagsList.Items.Add(item.Key + ": " + item.Value);
             }
-
-            // Update mentions list
             mentionsList.Items.Clear();
             foreach (var item in TweetMessage.MentionsDictionary.OrderByDescending(x => x.Value))
             {
                 mentionsList.Items.Add(item.Key + ": " + item.Value);
             }
-
-            // Update SIR list
             sirList.Items.Clear();
             foreach (var item in EmailMessage.SIRList)
             {
                 sirList.Items.Add("Sort Code: " + item.SortCode + ", Nature of Incident: " + item.NatureOfIncident);
             }
         }
-
 
         private void SmsRadioButton_Checked(object sender, RoutedEventArgs e)
         {
@@ -138,13 +122,26 @@ namespace SET09402_Software_Engineering_40509167
             TextBox tb = sender as TextBox;
             if (string.IsNullOrWhiteSpace(tb.Text))
             {
-                if (tb == messageInput && emailRadioButton.IsChecked == true) tb.Text = "Body here";
-                else if (tb == messageInput) tb.Text = "Text here";
-                else if (tb == emailRecipientInput) tb.Text = "Recipient";
-                else if (tb == emailSubjectInput) tb.Text = "Subject";
+                if (tb == messageInput && emailRadioButton.IsChecked == true)
+                    tb.Text = "Body here";
+                else if (tb == messageInput)
+                    tb.Text = "Text here";
+                else if (tb == emailRecipientInput)
+                    tb.Text = "Recipient";
+                else if (tb == emailSubjectInput)
+                    tb.Text = "Subject";
                 tb.Foreground = Brushes.Gray;
             }
         }
+
+        private void IncidentCheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            incidentComboBox.Visibility = Visibility.Visible;
+        }
+
+        private void IncidentCheckBox_Unchecked(object sender, RoutedEventArgs e)
+        {
+            incidentComboBox.Visibility = Visibility.Collapsed;
+        }
     }
 }
-
