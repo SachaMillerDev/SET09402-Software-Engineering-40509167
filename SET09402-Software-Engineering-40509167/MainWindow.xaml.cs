@@ -4,7 +4,6 @@ using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace SET09402_Software_Engineering_40509167
 {
@@ -29,7 +28,7 @@ namespace SET09402_Software_Engineering_40509167
             // SMS Validation
             if (smsRadioButton.IsChecked == true)
             {
-                if (!Regex.IsMatch(smsPhoneNumberInput.Text, @"^\+?\d{1,14}$"))
+                if (!Regex.IsMatch(smsPhoneNumberInput.Text, @"^\+?\d{1,14}$") || smsPhoneNumberInput.Text.Length > 14)
                 {
                     MessageBox.Show("Invalid phone number. Ensure it's numeric and up to 14 characters.");
                     return;
@@ -69,6 +68,7 @@ namespace SET09402_Software_Engineering_40509167
             {
                 messageType = "SMS:";
                 messageContent = $"{messageType} {uniqueID} Phone Number: {smsPhoneNumberInput.Text}; Message: {ExpandAbbreviations(messageInput.Text)}";
+                smsOutputList.Items.Insert(0, messageContent);
             }
             else if (emailRadioButton.IsChecked == true)
             {
@@ -77,18 +77,17 @@ namespace SET09402_Software_Engineering_40509167
                 if (incidentCheckBox.IsChecked == true)
                 {
                     messageContent += $"; Incident Type: {((ComboBoxItem)incidentComboBox.SelectedItem).Content}";
-                    SIRList.Items.Insert(0, ((ComboBoxItem)incidentComboBox.SelectedItem).Content);
+                    UpdateSIRList(((ComboBoxItem)incidentComboBox.SelectedItem).Content.ToString());
                 }
+                emailOutputList.Items.Insert(0, messageContent);
             }
             else if (tweetRadioButton.IsChecked == true)
             {
                 messageType = "Tweet:";
                 messageContent = $"{messageType} {uniqueID} Username: {tweetUsernameInput.Text}; Message: {ExpandAbbreviations(messageInput.Text)}";
                 CheckForMentionsAndHashtags(messageInput.Text);
+                tweetOutputList.Items.Insert(0, messageContent);
             }
-
-            File.AppendAllText("TestFile.txt", messageContent + Environment.NewLine);
-            outputTextBlock.Text = "New Message: " + messageContent + "\n\n" + outputTextBlock.Text;
 
             // Clearing input boxes
             smsPhoneNumberInput.Text = "Phone Number";
@@ -118,6 +117,26 @@ namespace SET09402_Software_Engineering_40509167
             foreach (Match hashtag in hashtags)
             {
                 TrendingList.Items.Insert(0, hashtag.Value);
+            }
+        }
+
+        private void UpdateSIRList(string incidentType)
+        {
+            bool found = false;
+            foreach (ListBoxItem item in SIRList.Items)
+            {
+                if (item.Content.ToString().StartsWith(incidentType))
+                {
+                    string[] parts = item.Content.ToString().Split(' ');
+                    int count = int.Parse(parts[1]) + 1;
+                    item.Content = incidentType + " " + count;
+                    found = true;
+                    break;
+                }
+            }
+            if (!found)
+            {
+                SIRList.Items.Insert(0, incidentType + " 1");
             }
         }
 

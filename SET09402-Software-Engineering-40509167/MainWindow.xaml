@@ -41,19 +41,32 @@
             <ComboBox x:Name="incidentComboBox" Margin="0,0,0,10" Visibility="Collapsed">
                 <ComboBoxItem Content="Theft"/>
                 <ComboBoxItem Content="Staff Attack"/>
-                <!-- ... other ComboBoxItems ... -->
+                <ComboBoxItem Content="ATM Theft"/>
+                <ComboBoxItem Content="Raid"/>
+                <ComboBoxItem Content="Customer Attack"/>
+                <ComboBoxItem Content="Staff Abuse"/>
+                <ComboBoxItem Content="Bomb Threat"/>
+                <ComboBoxItem Content="Terrorism"/>
+                <ComboBoxItem Content="Suspicious Incident"/>
+                <ComboBoxItem Content="Intelligence"/>
+                <ComboBoxItem Content="Cash Loss"/>
             </ComboBox>
             <TextBox x:Name="messageInput" Text="Body here" Height="289" TextWrapping="Wrap" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Margin="0,0,0,10"/>
             <Button x:Name="sendButton" Content="Send" Click="SendButton_Click" Height="40"/>
         </StackPanel>
 
-        <!-- Output window -->
-        <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" Margin="10">
-            <StackPanel>
-                <TextBlock Text="Output:" FontWeight="Bold" FontSize="16"/>
-                <TextBlock x:Name="outputTextBlock" MaxWidth="400" TextWrapping="Wrap"/>
-            </StackPanel>
-        </ScrollViewer>
+        <!-- Output window with Tabs -->
+        <TabControl Grid.Column="2" Margin="10">
+            <TabItem Header="SMS">
+                <ListBox x:Name="smsOutputList"/>
+            </TabItem>
+            <TabItem Header="Tweet">
+                <ListBox x:Name="tweetOutputList"/>
+            </TabItem>
+            <TabItem Header="Email">
+                <ListBox x:Name="emailOutputList"/>
+            </TabItem>
+        </TabControl>
 
         <!-- Column 3: Lists (Trending, Mentions, SIR) -->
         <GroupBox Grid.Column="3" Header="Lists">
