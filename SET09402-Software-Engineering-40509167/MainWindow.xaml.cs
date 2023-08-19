@@ -1,15 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Win32;
-
 
 namespace SET09402_Software_Engineering_40509167
 {
     public partial class MainWindow : Window
     {
+        private int messageIDCounter = 1; // Counter for unique message IDs
+        private Dictionary<string, string> abbreviations = new Dictionary<string, string>
+        {
+            { "LOL", "Laugh Out Loud" }
+            // Add other abbreviations here
+        };
+
         public MainWindow()
         {
             InitializeComponent();
@@ -21,67 +28,59 @@ namespace SET09402_Software_Engineering_40509167
         {
             string messageType = "";
             string messageContent = "";
+            string uniqueID = "ID: " + messageIDCounter++; // Generate unique ID
+
             if (smsRadioButton.IsChecked == true)
             {
                 messageType = "SMS:";
-                messageContent = messageType + " Phone Number: " + smsPhoneNumberInput.Text + "; Message: " + messageInput.Text;
+                messageContent = $"{messageType} {uniqueID} Phone Number: {smsPhoneNumberInput.Text}; Message: {ExpandAbbreviations(messageInput.Text)}";
             }
             else if (emailRadioButton.IsChecked == true)
             {
                 messageType = "Email:";
-                messageContent = messageType + " Recipient: " + emailRecipientInput.Text + "; Subject: " + emailSubjectInput.Text + "; Body: " + messageInput.Text;
+                messageContent = $"{messageType} {uniqueID} Recipient: {emailRecipientInput.Text}; Subject: {emailSubjectInput.Text}; Body: {ExpandAbbreviations(messageInput.Text)}";
                 if (incidentCheckBox.IsChecked == true)
                 {
-                    messageContent += "; Incident Type: " + ((ComboBoxItem)incidentComboBox.SelectedItem).Content;
+                    messageContent += $"; Incident Type: {((ComboBoxItem)incidentComboBox.SelectedItem).Content}";
+                    // Add to SIR list
+                    SIRList.Items.Insert(0, ((ComboBoxItem)incidentComboBox.SelectedItem).Content);
                 }
             }
             else if (tweetRadioButton.IsChecked == true)
             {
                 messageType = "Tweet:";
-                messageContent = messageType + " Username: " + tweetUsernameInput.Text + "; Message: " + messageInput.Text;
+                messageContent = $"{messageType} {uniqueID} Username: {tweetUsernameInput.Text}; Message: {ExpandAbbreviations(messageInput.Text)}";
+                // Check for mentions and hashtags
+                CheckForMentionsAndHashtags(messageInput.Text);
             }
+
+            // Append to file and update UI
             File.AppendAllText("TestFile.txt", messageContent + Environment.NewLine);
-            MessageProcessor processor = new MessageProcessor();
-            MessageReader reader = new MessageReader("TestFile.txt");
-            JSONOutput jsonOutput = new JSONOutput { OutputFile = "Output.json" };
-            Message message = reader.ReadMessage();
-            while (message != null)
-            {
-                processor.AddMessage(message);
-                message = reader.ReadMessage();
-            }
-            jsonOutput.WriteToJSON(processor.Messages);
-            string jsonContent = File.ReadAllText("Output.json");
-            string newOutput = "New Message: " + jsonContent;
-            outputTextBlock.Text = newOutput + "\n\n" + outputTextBlock.Text;
-            DisplayLists();
+            outputTextBlock.Text = "New Message: " + messageContent + "\n\n" + outputTextBlock.Text;
         }
 
-        private void LoadFromFileButton_Click(object sender, RoutedEventArgs e)
+        private string ExpandAbbreviations(string message)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            if (openFileDialog.ShowDialog() == true)
+            foreach (var abbreviation in abbreviations)
             {
-                DisplayLists();
+                message = message.Replace(abbreviation.Key, abbreviation.Value);
             }
+            return message;
         }
 
-        private void DisplayLists()
+        private void CheckForMentionsAndHashtags(string message)
         {
-            TrendingList.Items.Clear();
-            foreach (var item in TweetMessage.HashtagsDictionary.OrderByDescending(x => x.Value))
+            var mentions = Regex.Matches(message, @"@\w+");
+            var hashtags = Regex.Matches(message, @"#\w+");
+
+            foreach (Match mention in mentions)
             {
-                TrendingList.Items.Add(item.Key + ": " + item.Value);
+                MentionsList.Items.Insert(0, mention.Value);
             }
-            MentionsList.Items.Clear();
-            foreach (var item in TweetMessage.MentionsDictionary.OrderByDescending(x => x.Value))
+
+            foreach (Match hashtag in hashtags)
             {
-                MentionsList.Items.Add(item.Key + ": " + item.Value);
-            }
-            SIRList.Items.Clear();
-            foreach (var item in EmailMessage.SIRList)
-            {
-                SIRList.Items.Add("Sort Code: " + item.SortCode + ", Nature of Incident: " + item.NatureOfIncident);
+                TrendingList.Items.Insert(0, hashtag.Value);
             }
         }
 
