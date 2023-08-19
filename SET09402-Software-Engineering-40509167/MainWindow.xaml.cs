@@ -1,20 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace SET09402_Software_Engineering_40509167
 {
     public partial class MainWindow : Window
     {
-        private int messageIDCounter = 1; // Counter for unique message IDs
+        private int messageIDCounter = 1;
         private Dictionary<string, string> abbreviations = new Dictionary<string, string>
         {
             { "LOL", "Laugh Out Loud" }
-            // Add other abbreviations here
         };
 
         public MainWindow()
@@ -26,9 +25,45 @@ namespace SET09402_Software_Engineering_40509167
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
+            // Validation logic
+            // SMS Validation
+            if (smsRadioButton.IsChecked == true)
+            {
+                if (!Regex.IsMatch(smsPhoneNumberInput.Text, @"^\+?\d{1,14}$"))
+                {
+                    MessageBox.Show("Invalid phone number. Ensure it's numeric and up to 14 characters.");
+                    return;
+                }
+            }
+
+            // Tweet Validation
+            if (tweetRadioButton.IsChecked == true)
+            {
+                if (!tweetUsernameInput.Text.StartsWith("@") || tweetUsernameInput.Text.Length > 14)
+                {
+                    MessageBox.Show("Invalid username. It should start with '@' and be up to 14 characters.");
+                    return;
+                }
+            }
+
+            // Email Validation
+            if (emailRadioButton.IsChecked == true)
+            {
+                if (!Regex.IsMatch(emailRecipientInput.Text, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
+                {
+                    MessageBox.Show("Invalid email format.");
+                    return;
+                }
+                if (emailSubjectInput.Text.Length > 20)
+                {
+                    MessageBox.Show("Subject should be up to 20 characters.");
+                    return;
+                }
+            }
+
             string messageType = "";
             string messageContent = "";
-            string uniqueID = "ID: " + messageIDCounter++; // Generate unique ID
+            string uniqueID = "ID: " + messageIDCounter++;
 
             if (smsRadioButton.IsChecked == true)
             {
@@ -42,7 +77,6 @@ namespace SET09402_Software_Engineering_40509167
                 if (incidentCheckBox.IsChecked == true)
                 {
                     messageContent += $"; Incident Type: {((ComboBoxItem)incidentComboBox.SelectedItem).Content}";
-                    // Add to SIR list
                     SIRList.Items.Insert(0, ((ComboBoxItem)incidentComboBox.SelectedItem).Content);
                 }
             }
@@ -50,13 +84,18 @@ namespace SET09402_Software_Engineering_40509167
             {
                 messageType = "Tweet:";
                 messageContent = $"{messageType} {uniqueID} Username: {tweetUsernameInput.Text}; Message: {ExpandAbbreviations(messageInput.Text)}";
-                // Check for mentions and hashtags
                 CheckForMentionsAndHashtags(messageInput.Text);
             }
 
-            // Append to file and update UI
             File.AppendAllText("TestFile.txt", messageContent + Environment.NewLine);
             outputTextBlock.Text = "New Message: " + messageContent + "\n\n" + outputTextBlock.Text;
+
+            // Clearing input boxes
+            smsPhoneNumberInput.Text = "Phone Number";
+            tweetUsernameInput.Text = "Username";
+            emailRecipientInput.Text = "Recipient";
+            emailSubjectInput.Text = "Subject";
+            messageInput.Text = "Body here";
         }
 
         private string ExpandAbbreviations(string message)
@@ -72,12 +111,10 @@ namespace SET09402_Software_Engineering_40509167
         {
             var mentions = Regex.Matches(message, @"@\w+");
             var hashtags = Regex.Matches(message, @"#\w+");
-
             foreach (Match mention in mentions)
             {
                 MentionsList.Items.Insert(0, mention.Value);
             }
-
             foreach (Match hashtag in hashtags)
             {
                 TrendingList.Items.Insert(0, hashtag.Value);
