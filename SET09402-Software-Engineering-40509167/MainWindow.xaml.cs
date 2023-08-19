@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,8 +23,6 @@ namespace SET09402_Software_Engineering_40509167
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
-            // Validation logic
-            // SMS Validation
             if (smsRadioButton.IsChecked == true)
             {
                 if (!Regex.IsMatch(smsPhoneNumberInput.Text, @"^\+?\d{1,14}$") || smsPhoneNumberInput.Text.Length > 14)
@@ -35,7 +32,6 @@ namespace SET09402_Software_Engineering_40509167
                 }
             }
 
-            // Tweet Validation
             if (tweetRadioButton.IsChecked == true)
             {
                 if (!tweetUsernameInput.Text.StartsWith("@") || tweetUsernameInput.Text.Length > 14)
@@ -45,7 +41,6 @@ namespace SET09402_Software_Engineering_40509167
                 }
             }
 
-            // Email Validation
             if (emailRadioButton.IsChecked == true)
             {
                 if (!Regex.IsMatch(emailRecipientInput.Text, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
@@ -53,6 +48,7 @@ namespace SET09402_Software_Engineering_40509167
                     MessageBox.Show("Invalid email format.");
                     return;
                 }
+
                 if (emailSubjectInput.Text.Length > 20)
                 {
                     MessageBox.Show("Subject should be up to 20 characters.");
@@ -89,12 +85,12 @@ namespace SET09402_Software_Engineering_40509167
                 tweetOutputList.Items.Insert(0, messageContent);
             }
 
-            // Clearing input boxes
             smsPhoneNumberInput.Text = "Phone Number";
             tweetUsernameInput.Text = "Username";
             emailRecipientInput.Text = "Recipient";
             emailSubjectInput.Text = "Subject";
             messageInput.Text = "Body here";
+            incidentComboBox.SelectedIndex = -1;  // Reset the SIR dropdown
         }
 
         private string ExpandAbbreviations(string message)
@@ -123,13 +119,15 @@ namespace SET09402_Software_Engineering_40509167
         private void UpdateSIRList(string incidentType)
         {
             bool found = false;
-            foreach (ListBoxItem item in SIRList.Items)
+            foreach (var item in SIRList.Items)
             {
-                if (item.Content.ToString().StartsWith(incidentType))
+                string content = item.ToString();
+                if (content.StartsWith(incidentType))
                 {
-                    string[] parts = item.Content.ToString().Split(' ');
+                    string[] parts = content.Split(' ');
                     int count = int.Parse(parts[1]) + 1;
-                    item.Content = incidentType + " " + count;
+                    SIRList.Items.Remove(item);
+                    SIRList.Items.Insert(0, incidentType + " " + count);
                     found = true;
                     break;
                 }
