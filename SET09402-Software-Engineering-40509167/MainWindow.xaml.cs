@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
 
+
 namespace SET09402_Software_Engineering_40509167
 {
     public partial class MainWindow : Window
@@ -20,7 +21,6 @@ namespace SET09402_Software_Engineering_40509167
         {
             string messageType = "";
             string messageContent = "";
-
             if (smsRadioButton.IsChecked == true)
             {
                 messageType = "SMS:";
@@ -40,26 +40,20 @@ namespace SET09402_Software_Engineering_40509167
                 messageType = "Tweet:";
                 messageContent = messageType + " Username: " + tweetUsernameInput.Text + "; Message: " + messageInput.Text;
             }
-
             File.AppendAllText("TestFile.txt", messageContent + Environment.NewLine);
-
             MessageProcessor processor = new MessageProcessor();
             MessageReader reader = new MessageReader("TestFile.txt");
             JSONOutput jsonOutput = new JSONOutput { OutputFile = "Output.json" };
-
             Message message = reader.ReadMessage();
             while (message != null)
             {
                 processor.AddMessage(message);
                 message = reader.ReadMessage();
             }
-
             jsonOutput.WriteToJSON(processor.Messages);
-
             string jsonContent = File.ReadAllText("Output.json");
             string newOutput = "New Message: " + jsonContent;
             outputTextBlock.Text = newOutput + "\n\n" + outputTextBlock.Text;
-
             DisplayLists();
         }
 
@@ -79,13 +73,11 @@ namespace SET09402_Software_Engineering_40509167
             {
                 TrendingList.Items.Add(item.Key + ": " + item.Value);
             }
-
             MentionsList.Items.Clear();
             foreach (var item in TweetMessage.MentionsDictionary.OrderByDescending(x => x.Value))
             {
                 MentionsList.Items.Add(item.Key + ": " + item.Value);
             }
-
             SIRList.Items.Clear();
             foreach (var item in EmailMessage.SIRList)
             {
