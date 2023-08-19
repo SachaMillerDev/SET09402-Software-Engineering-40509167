@@ -28,14 +28,16 @@
 
         <!-- Input fields -->
         <StackPanel Grid.Column="1" Margin="10">
+            <!-- SMS Input -->
+            <TextBox x:Name="smsPhoneNumberInput" Text="Phone Number" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Margin="0,0,0,10" Visibility="Collapsed"/>
+
+            <!-- Tweet Input -->
+            <TextBox x:Name="tweetUsernameInput" Text="Username" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Margin="0,0,0,10" Visibility="Collapsed"/>
+
+            <!-- Email Input -->
             <TextBox x:Name="emailRecipientInput" Text="Recipient" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Margin="0,0,0,10"/>
             <TextBox x:Name="emailSubjectInput" Text="Subject" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Margin="0,0,0,10"/>
-            <TextBox x:Name="messageInput" Text="Body here" Height="289" TextWrapping="Wrap" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Margin="0,0,0,10"/>
-
-            <!-- Checkbox for selecting incident type -->
             <CheckBox x:Name="incidentCheckBox" Content="Select Incident Type" Margin="0,10,0,10" Checked="IncidentCheckBox_Checked" Unchecked="IncidentCheckBox_Unchecked"/>
-
-            <!-- Dropdown for incident types -->
             <ComboBox x:Name="incidentComboBox" Margin="0,0,0,10" Visibility="Collapsed">
                 <ComboBoxItem Content="Theft"/>
                 <ComboBoxItem Content="Staff Attack"/>
@@ -49,7 +51,7 @@
                 <ComboBoxItem Content="Intelligence"/>
                 <ComboBoxItem Content="Cash Loss"/>
             </ComboBox>
-
+            <TextBox x:Name="messageInput" Text="Body here" Height="289" TextWrapping="Wrap" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Margin="0,0,0,10"/>
             <Button x:Name="sendButton" Content="Send" Click="SendButton_Click" Height="40"/>
         </StackPanel>
 
