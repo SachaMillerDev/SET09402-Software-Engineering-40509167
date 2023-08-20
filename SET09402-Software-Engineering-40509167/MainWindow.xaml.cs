@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Text.RegularExpressions;
 using Newtonsoft.Json;
-using System.Linq;
 using System.IO;
-
 
 namespace SET09402_Software_Engineering_40509167
 {
@@ -38,7 +37,6 @@ namespace SET09402_Software_Engineering_40509167
             { "TBT", "Throwback Thursday" },
             { "TGIF", "Thank God It's Friday" }
         };
-
 
         public MainWindow()
         {
@@ -110,7 +108,7 @@ namespace SET09402_Software_Engineering_40509167
 
                     ListBoxItem listItem = new ListBoxItem();
                     listItem.Content = messageContent;
-                    listItem.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 230, 230)); // Set the background color to light red
+                    listItem.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 230, 230));
                     emailOutputList.Items.Insert(0, listItem);
                 }
                 else
@@ -132,7 +130,8 @@ namespace SET09402_Software_Engineering_40509167
             emailSubjectInput.Text = "Subject";
             messageInput.Text = "Body here";
             incidentComboBox.SelectedIndex = -1;
-            incidentCheckBox.IsChecked = false; // Uncheck the incident checkbox after sending the message
+            incidentCheckBox.IsChecked = false;
+
             SaveMessagesToJson();
         }
 
@@ -149,10 +148,12 @@ namespace SET09402_Software_Engineering_40509167
         {
             var mentions = Regex.Matches(message, @"@\w+");
             var hashtags = Regex.Matches(message, @"#\w+");
+
             foreach (Match mention in mentions)
             {
                 MentionsList.Items.Insert(0, mention.Value);
             }
+
             foreach (Match hashtag in hashtags)
             {
                 TrendingList.Items.Insert(0, hashtag.Value);
@@ -175,6 +176,7 @@ namespace SET09402_Software_Engineering_40509167
                     break;
                 }
             }
+
             if (!found)
             {
                 SIRList.Items.Insert(0, incidentType + " 1");
@@ -200,6 +202,7 @@ namespace SET09402_Software_Engineering_40509167
             emailRecipientInput.Visibility = Visibility.Visible;
             emailSubjectInput.Visibility = Visibility.Visible;
             incidentCheckBox.Visibility = Visibility.Visible;
+            incidentComboBox.Visibility = Visibility.Visible;
             messageInput.Text = "Body here";
             messageInput.Foreground = System.Windows.Media.Brushes.Gray;
         }
@@ -212,32 +215,52 @@ namespace SET09402_Software_Engineering_40509167
             emailSubjectInput.Visibility = Visibility.Collapsed;
             incidentCheckBox.Visibility = Visibility.Collapsed;
             incidentComboBox.Visibility = Visibility.Collapsed;
-            messageInput.Text = "Text here";
+            messageInput.Text = "Tweet here";
             messageInput.Foreground = System.Windows.Media.Brushes.Gray;
         }
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
-            TextBox tb = sender as TextBox;
-            if (tb.Text == "Text here" || tb.Text == "Recipient" || tb.Text == "Subject" || tb.Text == "Body here" || tb.Text == "Phone Number" || tb.Text == "Username")
-            {
-                tb.Text = "";
-                tb.Foreground = System.Windows.Media.Brushes.Black;
-            }
+            TextBox textBox = (TextBox)sender;
+            textBox.Text = "";
+            textBox.Foreground = System.Windows.Media.Brushes.Black;
         }
 
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            TextBox tb = sender as TextBox;
-            if (string.IsNullOrWhiteSpace(tb.Text))
+            TextBox textBox = (TextBox)sender;
+            if (string.IsNullOrWhiteSpace(textBox.Text))
             {
-                if (tb == messageInput && emailRadioButton.IsChecked == true) tb.Text = "Body here";
-                else if (tb == messageInput) tb.Text = "Text here";
-                else if (tb == emailRecipientInput) tb.Text = "Recipient";
-                else if (tb == emailSubjectInput) tb.Text = "Subject";
-                else if (tb == smsPhoneNumberInput) tb.Text = "Phone Number";
-                else if (tb == tweetUsernameInput) tb.Text = "Username";
-                tb.Foreground = System.Windows.Media.Brushes.Gray;
+                switch (textBox.Name)
+                {
+                    case "smsPhoneNumberInput":
+                        textBox.Text = "Phone Number";
+                        break;
+                    case "tweetUsernameInput":
+                        textBox.Text = "Username";
+                        break;
+                    case "emailRecipientInput":
+                        textBox.Text = "Recipient";
+                        break;
+                    case "emailSubjectInput":
+                        textBox.Text = "Subject";
+                        break;
+                    case "messageInput":
+                        if (smsRadioButton.IsChecked == true)
+                        {
+                            textBox.Text = "Text here";
+                        }
+                        else if (emailRadioButton.IsChecked == true)
+                        {
+                            textBox.Text = "Body here";
+                        }
+                        else if (tweetRadioButton.IsChecked == true)
+                        {
+                            textBox.Text = "Tweet here";
+                        }
+                        break;
+                }
+                textBox.Foreground = System.Windows.Media.Brushes.Gray;
             }
         }
 
@@ -251,6 +274,7 @@ namespace SET09402_Software_Engineering_40509167
             incidentComboBox.Visibility = Visibility.Collapsed;
             incidentComboBox.SelectedIndex = -1;
         }
+
         private void SaveMessagesToJson()
         {
             var messages = new
