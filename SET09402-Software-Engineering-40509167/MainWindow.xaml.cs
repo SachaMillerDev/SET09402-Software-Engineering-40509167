@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Text.RegularExpressions;
 
 namespace SET09402_Software_Engineering_40509167
 {
@@ -11,8 +11,30 @@ namespace SET09402_Software_Engineering_40509167
         private int messageIDCounter = 1;
         private Dictionary<string, string> abbreviations = new Dictionary<string, string>
         {
-            { "LOL", "Laugh Out Loud" }
+            { "LOL", "Laugh Out Loud" },
+            { "BRB", "Be Right Back" },
+            { "GTG", "Got To Go" },
+            { "TTYL", "Talk To You Later" },
+            { "OMG", "Oh My God" },
+            { "IDK", "I Don't Know" },
+            { "IMO", "In My Opinion" },
+            { "IMHO", "In My Humble Opinion" },
+            { "BFF", "Best Friends Forever" },
+            { "FYI", "For Your Information" },
+            { "ROFL", "Rolling On the Floor Laughing" },
+            { "SMH", "Shaking My Head" },
+            { "TMI", "Too Much Information" },
+            { "YOLO", "You Only Live Once" },
+            { "ICYMI", "In Case You Missed It" },
+            { "FOMO", "Fear Of Missing Out" },
+            { "TL;DR", "Too Long; Didn't Read" },
+            { "BTW", "By The Way" },
+            { "DM", "Direct Message" },
+            { "NSFW", "Not Safe For Work" },
+            { "TBT", "Throwback Thursday" },
+            { "TGIF", "Thank God It's Friday" }
         };
+
 
         public MainWindow()
         {
@@ -54,6 +76,12 @@ namespace SET09402_Software_Engineering_40509167
                     MessageBox.Show("Subject should be up to 20 characters.");
                     return;
                 }
+
+                if (incidentCheckBox.IsChecked == true && incidentComboBox.SelectedIndex == -1)
+                {
+                    MessageBox.Show("Please select an incident type or uncheck the SIR box.");
+                    return;
+                }
             }
 
             string messageType = "";
@@ -70,12 +98,21 @@ namespace SET09402_Software_Engineering_40509167
             {
                 messageType = "Email:";
                 messageContent = $"{messageType} {uniqueID} Recipient: {emailRecipientInput.Text}; Subject: {emailSubjectInput.Text}; Body: {ExpandAbbreviations(messageInput.Text)}";
+
                 if (incidentCheckBox.IsChecked == true)
                 {
                     messageContent += $"; Incident Type: {((ComboBoxItem)incidentComboBox.SelectedItem).Content}";
                     UpdateSIRList(((ComboBoxItem)incidentComboBox.SelectedItem).Content.ToString());
+
+                    ListBoxItem listItem = new ListBoxItem();
+                    listItem.Content = messageContent;
+                    listItem.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 230, 230)); // Set the background color to light red
+                    emailOutputList.Items.Insert(0, listItem);
                 }
-                emailOutputList.Items.Insert(0, messageContent);
+                else
+                {
+                    emailOutputList.Items.Insert(0, messageContent);
+                }
             }
             else if (tweetRadioButton.IsChecked == true)
             {
@@ -90,7 +127,8 @@ namespace SET09402_Software_Engineering_40509167
             emailRecipientInput.Text = "Recipient";
             emailSubjectInput.Text = "Subject";
             messageInput.Text = "Body here";
-            incidentComboBox.SelectedIndex = -1;  // Reset the SIR dropdown
+            incidentComboBox.SelectedIndex = -1;
+            incidentCheckBox.IsChecked = false; // Uncheck the incident checkbox after sending the message
         }
 
         private string ExpandAbbreviations(string message)
@@ -206,6 +244,7 @@ namespace SET09402_Software_Engineering_40509167
         private void IncidentCheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
             incidentComboBox.Visibility = Visibility.Collapsed;
+            incidentComboBox.SelectedIndex = -1;
         }
     }
 }
