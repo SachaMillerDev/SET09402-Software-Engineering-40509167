@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
+using System.Linq;
 
 namespace SET09402_Software_Engineering_40509167
 {
@@ -129,6 +131,7 @@ namespace SET09402_Software_Engineering_40509167
             messageInput.Text = "Body here";
             incidentComboBox.SelectedIndex = -1;
             incidentCheckBox.IsChecked = false; // Uncheck the incident checkbox after sending the message
+            SaveMessagesToJson();
         }
 
         private string ExpandAbbreviations(string message)
@@ -245,6 +248,18 @@ namespace SET09402_Software_Engineering_40509167
         {
             incidentComboBox.Visibility = Visibility.Collapsed;
             incidentComboBox.SelectedIndex = -1;
+        }
+        private void SaveMessagesToJson()
+        {
+            var messages = new
+            {
+                SMSMessages = smsOutputList.Items.Cast<string>().ToList(),
+                EmailMessages = emailOutputList.Items.Cast<ListBoxItem>().Select(item => item.Content.ToString()).ToList(),
+                TweetMessages = tweetOutputList.Items.Cast<string>().ToList()
+            };
+
+            string json = JsonConvert.SerializeObject(messages, Formatting.Indented);
+            File.WriteAllText("messages.json", json);
         }
     }
 }
