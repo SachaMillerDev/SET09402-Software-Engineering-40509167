@@ -277,15 +277,25 @@ namespace SET09402_Software_Engineering_40509167
 
         private void SaveMessagesToJson()
         {
-            var messages = new
+            try
             {
-                SMSMessages = smsOutputList.Items.Cast<string>().ToList(),
-                EmailMessages = emailOutputList.Items.Cast<ListBoxItem>().Select(item => item.Content.ToString()).ToList(),
-                TweetMessages = tweetOutputList.Items.Cast<string>().ToList()
-            };
+                var messages = new
+                {
+                    SMSMessages = smsOutputList.Items.Cast<string>().ToList(),
+                    EmailMessages = emailOutputList.Items.Cast<ListBoxItem>().Select(item => item.Content.ToString()).ToList(),
+                    TweetMessages = tweetOutputList.Items.Cast<string>().ToList()
+                };
 
-            string json = JsonConvert.SerializeObject(messages, Formatting.Indented);
-            File.WriteAllText("messages.json", json);
+                string json = JsonConvert.SerializeObject(messages, Formatting.Indented);
+                string filePath = @"C:\Users\SachaMiller\Downloads\test\";
+                File.WriteAllText(filePath, json);
+                MessageBox.Show($"Messages saved to: {Path.GetFullPath(filePath)}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while saving to JSON: {ex.Message}");
+            }
         }
+
     }
 }
