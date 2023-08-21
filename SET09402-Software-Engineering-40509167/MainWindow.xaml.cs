@@ -71,6 +71,13 @@ namespace SET09402_Software_Engineering_40509167
             }
             return $"{sortCodeSegment1:00}-{sortCodeSegment2:00}-{sortCodeSegment3:00}";
         }
+        private List<string> ExtractURLs(string message)
+        {
+            var urlPattern = @"https://www\.[\w\-\.]+";
+            var matches = Regex.Matches(message, urlPattern);
+            return matches.Cast<Match>().Select(m => m.Value).ToList();
+        }
+
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {

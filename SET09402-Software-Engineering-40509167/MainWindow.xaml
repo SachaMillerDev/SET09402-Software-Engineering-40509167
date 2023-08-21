@@ -80,6 +80,11 @@
                 <TabItem Header="SIR">
                     <ListBox Name="SIRList"/>
                 </TabItem>
+                <TabItem Header ="URL's">
+                    <ListBox x:Name="QuarantinedUrlsList" Visibility="Collapsed"/>
+                </TabItem>
+
+
             </TabControl>
         </GroupBox>
     </Grid>
