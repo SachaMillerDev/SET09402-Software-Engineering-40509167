@@ -33,12 +33,10 @@ public class EmailMessage : Message
 
     public void ExtractSIRDetails()
     {
-        if (IsSIR())
-        {
-            SortCode = Regex.Match(Text, @"Sort Code: (\d{2}-\d{2}-\d{2})").Groups[1].Value;
-            NatureOfIncident = Regex.Match(Text, @"Nature of Incident: (.+)").Groups[1].Value.Trim();
-            SIRList.Add(this);
-        }
+        SortCode = Regex.Match(Text, @"Sort Code: (\d{2}-\d{2}-\d{2})").Groups[1].Value;
+        NatureOfIncident = Regex.Match(Text, @"Nature of Incident: (.+)").Groups[1].Value.Trim();
+        SIRList.Add(this);
     }
+
 }
 
