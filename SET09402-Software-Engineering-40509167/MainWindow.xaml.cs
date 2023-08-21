@@ -348,17 +348,31 @@ namespace SET09402_Software_Engineering_40509167
                 return emailContent;
             }).Where(email => email != null).ToList(); // Filter out any null values
 
-            var messages = new
+            var hashtagList = hashtagOutputList.Items.Cast<string>().ToList();
+            var mentionList = mentionOutputList.Items.Cast<string>().ToList();
+            var sirList = sirOutputList.Items.Cast<string>().ToList();
+
+            var dataToSave = new
             {
-                SMSMessages = smsOutputList.Items.Cast<string>().ToList(),
-                EmailMessages = emailMessages,
-                TweetMessages = tweetOutputList.Items.Cast<string>().ToList()
+                Messages = new
+                {
+                    SMSMessages = smsOutputList.Items.Cast<string>().ToList(),
+                    EmailMessages = emailMessages,
+                    TweetMessages = tweetOutputList.Items.Cast<string>().ToList(),
+                },
+                Lists = new
+                {
+                    Hashtags = hashtagList,
+                    Mentions = mentionList,
+                    SIRs = sirList
+                }
             };
 
-            string json = JsonConvert.SerializeObject(messages, Formatting.Indented);
+            string json = JsonConvert.SerializeObject(dataToSave, Formatting.Indented);
             string filePath = @"C:\Users\SachaMiller\Downloads\test\messages.json";
             File.WriteAllText(filePath, json);
         }
+
 
 
 
