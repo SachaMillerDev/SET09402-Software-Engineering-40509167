@@ -325,8 +325,6 @@ namespace SET09402_Software_Engineering_40509167
 
         private void SaveMessagesToJson()
         {
-            try
-            {
                 var messages = new
                 {
                     SMSMessages = smsOutputList.Items.Cast<string>().ToList(),
@@ -336,12 +334,6 @@ namespace SET09402_Software_Engineering_40509167
                 string json = JsonConvert.SerializeObject(messages, Formatting.Indented);
                 string filePath = @"C:\Users\SachaMiller\Downloads\test\messages.json";
                 File.WriteAllText(filePath, json);
-                MessageBox.Show($"Messages saved to: {Path.GetFullPath(filePath)}");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred while saving to JSON: {ex.Message}");
-            }
         }
     }
 }
