@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using Newtonsoft.Json;
-using System.IO;
 
 namespace SET09402_Software_Engineering_40509167
 {
@@ -18,28 +18,28 @@ namespace SET09402_Software_Engineering_40509167
 
         private Dictionary<string, string> abbreviations = new Dictionary<string, string>
         {
-            { "LOL", "Laugh Out Loud" },
-            { "BRB", "Be Right Back" },
-            { "GTG", "Got To Go" },
-            { "TTYL", "Talk To You Later" },
-            { "OMG", "Oh My God" },
-            { "IDK", "I Don't Know" },
-            { "IMO", "In My Opinion" },
-            { "IMHO", "In My Humble Opinion" },
-            { "BFF", "Best Friends Forever" },
-            { "FYI", "For Your Information" },
-            { "ROFL", "Rolling On the Floor Laughing" },
-            { "SMH", "Shaking My Head" },
-            { "TMI", "Too Much Information" },
-            { "YOLO", "You Only Live Once" },
-            { "ICYMI", "In Case You Missed It" },
-            { "FOMO", "Fear Of Missing Out" },
-            { "TL;DR", "Too Long; Didn't Read" },
-            { "BTW", "By The Way" },
-            { "DM", "Direct Message" },
-            { "NSFW", "Not Safe For Work" },
-            { "TBT", "Throwback Thursday" },
-            { "TGIF", "Thank God It's Friday" }
+            {"LOL", "Laugh Out Loud"},
+            {"BRB", "Be Right Back"},
+            {"GTG", "Got To Go"},
+            {"TTYL", "Talk To You Later"},
+            {"OMG", "Oh My God"},
+            {"IDK", "I Don't Know"},
+            {"IMO", "In My Opinion"},
+            {"IMHO", "In My Humble Opinion"},
+            {"BFF", "Best Friends Forever"},
+            {"FYI", "For Your Information"},
+            {"ROFL", "Rolling On the Floor Laughing"},
+            {"SMH", "Shaking My Head"},
+            {"TMI", "Too Much Information"},
+            {"YOLO", "You Only Live Once"},
+            {"ICYMI", "In Case You Missed It"},
+            {"FOMO", "Fear Of Missing Out"},
+            {"TL;DR", "Too Long; Didn't Read"},
+            {"BTW", "By The Way"},
+            {"DM", "Direct Message"},
+            {"NSFW", "Not Safe For Work"},
+            {"TBT", "Throwback Thursday"},
+            {"TGIF", "Thank God It's Friday"}
         };
 
         public MainWindow()
