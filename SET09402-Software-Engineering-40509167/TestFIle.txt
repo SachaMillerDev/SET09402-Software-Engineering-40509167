@@ -1,3 +1,0 @@
-SMS:Hello, this is an SMS message!
-Email:Subject: Welcome; Body: This is an email message.
-Tweet:@user This is a tweet with #hashtags and @mentions.
