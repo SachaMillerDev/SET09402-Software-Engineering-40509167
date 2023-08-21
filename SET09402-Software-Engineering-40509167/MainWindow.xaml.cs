@@ -348,7 +348,7 @@ namespace SET09402_Software_Engineering_40509167
                 return emailContent;
             }).Where(email => email != null).ToList(); // Filter out any null values
 
-            var hashtagList = HashtagsList.Items.Cast<string>().ToList();
+            var hashtagList = TrendingList.Items.Cast<string>().ToList();
             var mentionList = MentionsList.Items.Cast<string>().ToList();
             var sirList = SIRList.Items.Cast<string>().ToList();
 
