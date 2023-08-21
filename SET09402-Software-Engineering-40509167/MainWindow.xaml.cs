@@ -208,24 +208,15 @@ namespace SET09402_Software_Engineering_40509167
             foreach (var item in SIRList.Items)
             {
                 string content = item.ToString();
-                if (content.StartsWith(incidentType))
+                var parts = content.Split(' ');
+                if (parts.Length == 2 && parts[0] == incidentType)
                 {
-                    string[] parts = content.Split(' ');
-                    if (parts.Length == 2)
+                    if (int.TryParse(parts[1], out int count))
                     {
-                        try
-                        {
-                            int count = int.Parse(parts[1]) + 1;
-                            SIRList.Items.Remove(item);
-                            SIRList.Items.Insert(0, incidentType + " " + count);
-                            found = true;
-                            break;
-                        }
-                        catch (FormatException)
-                        {
-                            MessageBox.Show($"Failed to parse count from string: '{parts[1]}'");
-                            return;
-                        }
+                        SIRList.Items.Remove(item);
+                        SIRList.Items.Insert(0, incidentType + " " + (count + 1));
+                        found = true;
+                        break;
                     }
                 }
             }
@@ -234,21 +225,20 @@ namespace SET09402_Software_Engineering_40509167
                 SIRList.Items.Insert(0, incidentType + " 1");
             }
 
-            // Sort the SIRList based on the count
-            var sortedSIRList = SIRList.Items.Cast<string>()
-                .Where(item => item.Contains(" ")) // Ensure the item has a space (to split on)
-                .OrderByDescending(item => int.Parse(item.Split(' ')[1]))
-                .ToList();
+            // Sort the SIR list
+            var sortedList = SIRList.Items.Cast<string>()
+                .OrderByDescending(item =>
+                {
+                    var splitItem = item.Split(' ');
+                    return splitItem.Length > 1 && int.TryParse(splitItem[1], out int tally) ? tally : 0;
+                }).ToList();
 
             SIRList.Items.Clear();
-            foreach (var sir in sortedSIRList)
+            foreach (var sir in sortedList)
             {
                 SIRList.Items.Add(sir);
             }
         }
-
-
-
 
 
         private void SmsRadioButton_Checked(object sender, RoutedEventArgs e)
