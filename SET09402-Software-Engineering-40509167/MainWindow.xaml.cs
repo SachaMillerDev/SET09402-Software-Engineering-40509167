@@ -211,18 +211,21 @@ namespace SET09402_Software_Engineering_40509167
                 if (content.StartsWith(incidentType))
                 {
                     string[] parts = content.Split(' ');
-                    try
+                    if (parts.Length == 2)
                     {
-                        int count = int.Parse(parts[1]) + 1;
-                        SIRList.Items.Remove(item);
-                        SIRList.Items.Insert(0, incidentType + " " + count);
-                        found = true;
-                        break;
-                    }
-                    catch (FormatException)
-                    {
-                        MessageBox.Show($"Failed to parse count from string: '{parts[1]}'");
-                        return;
+                        try
+                        {
+                            int count = int.Parse(parts[1]) + 1;
+                            SIRList.Items.Remove(item);
+                            SIRList.Items.Insert(0, incidentType + " " + count);
+                            found = true;
+                            break;
+                        }
+                        catch (FormatException)
+                        {
+                            MessageBox.Show($"Failed to parse count from string: '{parts[1]}'");
+                            return;
+                        }
                     }
                 }
             }
@@ -231,7 +234,9 @@ namespace SET09402_Software_Engineering_40509167
                 SIRList.Items.Insert(0, incidentType + " 1");
             }
 
+            // Sort the SIRList based on the count
             var sortedSIRList = SIRList.Items.Cast<string>()
+                .Where(item => item.Contains(" ")) // Ensure the item has a space (to split on)
                 .OrderByDescending(item => int.Parse(item.Split(' ')[1]))
                 .ToList();
 
@@ -241,6 +246,7 @@ namespace SET09402_Software_Engineering_40509167
                 SIRList.Items.Add(sir);
             }
         }
+
 
 
 
