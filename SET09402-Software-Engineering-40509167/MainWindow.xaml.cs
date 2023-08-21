@@ -11,6 +11,9 @@ namespace SET09402_Software_Engineering_40509167
 {
     public partial class MainWindow : Window
     {
+        private Dictionary<string, int> mentionsDictionary = new Dictionary<string, int>();
+        private Dictionary<string, int> hashtagsDictionary = new Dictionary<string, int>();
+        private Dictionary<string, int> quarantinedUrlsDictionary = new Dictionary<string, int>();
         private int messageIDCounter = 1;
         private int sortCodeSegment1 = 0;
         private int sortCodeSegment2 = 0;
@@ -205,17 +208,47 @@ namespace SET09402_Software_Engineering_40509167
 
         private void CheckForMentionsAndHashtags(string message)
         {
-            var mentions = Regex.Matches(message, @"@\w+");
-            var hashtags = Regex.Matches(message, @"#\w+");
-            foreach (Match mention in mentions)
+            // Extracting mentions and hashtags
+            var mentions = Regex.Matches(message, @"@\w+").Cast<Match>().Select(m => m.Value).ToList();
+            var hashtags = Regex.Matches(message, @"#\w+").Cast<Match>().Select(m => m.Value).ToList();
+
+            // Updating mentions dictionary and list
+            foreach (var mention in mentions)
             {
-                MentionsList.Items.Insert(0, mention.Value);
+                if (mentionsDictionary.ContainsKey(mention))
+                {
+                    mentionsDictionary[mention]++;
+                }
+                else
+                {
+                    mentionsDictionary[mention] = 1;
+                }
             }
-            foreach (Match hashtag in hashtags)
+            MentionsList.Items.Clear();
+            foreach (var item in mentionsDictionary.OrderByDescending(x => x.Value))
             {
-                TrendingList.Items.Insert(0, hashtag.Value);
+                MentionsList.Items.Add($"{item.Key} ({item.Value})");
+            }
+
+            // Updating hashtags dictionary and list
+            foreach (var hashtag in hashtags)
+            {
+                if (hashtagsDictionary.ContainsKey(hashtag))
+                {
+                    hashtagsDictionary[hashtag]++;
+                }
+                else
+                {
+                    hashtagsDictionary[hashtag] = 1;
+                }
+            }
+            TrendingList.Items.Clear();
+            foreach (var item in hashtagsDictionary.OrderByDescending(x => x.Value))
+            {
+                TrendingList.Items.Add($"{item.Key} ({item.Value})");
             }
         }
+
         private void UpdateSIRList(string incidentType)
         {
             bool found = false;
