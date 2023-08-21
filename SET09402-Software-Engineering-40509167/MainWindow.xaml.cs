@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace SET09402_Software_Engineering_40509167
 {
@@ -124,6 +124,7 @@ namespace SET09402_Software_Engineering_40509167
                     Subject = emailSubjectInput.Text,
                     Body = messageInput.Text
                 };
+
                 if (emailMessage.IsSIR())
                 {
                     string sortCode = GenerateNextSortCode();
@@ -139,6 +140,7 @@ namespace SET09402_Software_Engineering_40509167
 
                 messageType = "Email:";
                 messageContent = $"{messageType} {uniqueID} Recipient: {emailRecipientInput.Text}; Subject: {emailSubjectInput.Text}; Body: {ExpandAbbreviations(messageInput.Text)}";
+
                 if (incidentCheckBox.IsChecked == true)
                 {
                     messageContent += $"; Incident Type: {((ComboBoxItem)incidentComboBox.SelectedItem).Content}";
