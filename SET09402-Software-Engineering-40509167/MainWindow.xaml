@@ -81,7 +81,7 @@
                     <ListBox Name="SIRList"/>
                 </TabItem>
                 <TabItem Header ="URL's">
-                    <ListBox x:Name="QuarantinedUrlsList" Visibility="Collapsed"/>
+                    <ListBox Name="QuarantinedUrlsList"/>
                 </TabItem>
 
 
