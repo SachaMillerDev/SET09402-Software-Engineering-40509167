@@ -342,21 +342,24 @@ namespace SET09402_Software_Engineering_40509167
 
         private void SaveMessagesToJson()
         {
-            var emailMessages = emailOutputList.Items.Cast<EmailMessage>().ToList();
-            var sirMessages = EmailMessage.SIRList;
+            var emailMessages = emailOutputList.Items.Cast<ListBoxItem>().Select(item =>
+            {
+                var emailContent = item.Content as EmailMessage; // Extract the content as EmailMessage
+                return emailContent;
+            }).Where(email => email != null).ToList(); // Filter out any null values
 
             var messages = new
             {
                 SMSMessages = smsOutputList.Items.Cast<string>().ToList(),
                 EmailMessages = emailMessages,
-                TweetMessages = tweetOutputList.Items.Cast<string>().ToList(),
-                SIRMessages = sirMessages
+                TweetMessages = tweetOutputList.Items.Cast<string>().ToList()
             };
 
             string json = JsonConvert.SerializeObject(messages, Formatting.Indented);
             string filePath = @"C:\Users\SachaMiller\Downloads\test\messages.json";
             File.WriteAllText(filePath, json);
         }
+
 
 
     }
