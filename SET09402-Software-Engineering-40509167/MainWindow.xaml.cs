@@ -12,6 +12,10 @@ namespace SET09402_Software_Engineering_40509167
     public partial class MainWindow : Window
     {
         private int messageIDCounter = 1;
+        private int sortCodeSegment1 = 0;
+        private int sortCodeSegment2 = 0;
+        private int sortCodeSegment3 = 0;
+
         private Dictionary<string, string> abbreviations = new Dictionary<string, string>
         {
             { "LOL", "Laugh Out Loud" },
@@ -45,11 +49,32 @@ namespace SET09402_Software_Engineering_40509167
             emailSubjectInput.Visibility = Visibility.Collapsed;
         }
 
+        private string GenerateNextSortCode()
+        {
+            sortCodeSegment3++;
+            if (sortCodeSegment3 > 99)
+            {
+                sortCodeSegment3 = 0;
+                sortCodeSegment2++;
+                if (sortCodeSegment2 > 99)
+                {
+                    sortCodeSegment2 = 0;
+                    sortCodeSegment1++;
+                    if (sortCodeSegment1 > 99)
+                    {
+                        MessageBox.Show("No more unique sort code available. Please speak to an admin.");
+                        return null;
+                    }
+                }
+            }
+            return $"{sortCodeSegment1:00}-{sortCodeSegment2:00}-{sortCodeSegment3:00}";
+        }
+
         private void SendButton_Click(object sender, RoutedEventArgs e)
         {
             if (smsRadioButton.IsChecked == true)
             {
-                if (!Regex.IsMatch(smsPhoneNumberInput.Text, @"^\+?\d{1,14}$") || smsPhoneNumberInput.Text.Length > 14)
+                if (!Regex.IsMatch(smsPhoneNumberInput.Text, @"^\+\d{1,14}$") || smsPhoneNumberInput.Text.Length > 14)
                 {
                     MessageBox.Show("Invalid phone number. Ensure it's numeric and up to 14 characters.");
                     return;
@@ -90,22 +115,32 @@ namespace SET09402_Software_Engineering_40509167
             string messageContent = "";
             string uniqueID = "ID: " + messageIDCounter++;
 
-            if (smsRadioButton.IsChecked == true)
+            if (emailRadioButton.IsChecked == true)
             {
-                messageType = "SMS:";
-                messageContent = $"{messageType} {uniqueID} Phone Number: {smsPhoneNumberInput.Text}; Message: {ExpandAbbreviations(messageInput.Text)}";
-                smsOutputList.Items.Insert(0, messageContent);
-            }
-            else if (emailRadioButton.IsChecked == true)
-            {
+                EmailMessage emailMessage = new EmailMessage
+                {
+                    Subject = emailSubjectInput.Text,
+                    Body = messageInput.Text
+                };
+                if (emailMessage.IsSIR())
+                {
+                    string sortCode = GenerateNextSortCode();
+                    if (sortCode != null)
+                    {
+                        uniqueID = "Sort Code: " + sortCode;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+
                 messageType = "Email:";
                 messageContent = $"{messageType} {uniqueID} Recipient: {emailRecipientInput.Text}; Subject: {emailSubjectInput.Text}; Body: {ExpandAbbreviations(messageInput.Text)}";
-
                 if (incidentCheckBox.IsChecked == true)
                 {
                     messageContent += $"; Incident Type: {((ComboBoxItem)incidentComboBox.SelectedItem).Content}";
                     UpdateSIRList(((ComboBoxItem)incidentComboBox.SelectedItem).Content.ToString());
-
                     ListBoxItem listItem = new ListBoxItem();
                     listItem.Content = messageContent;
                     listItem.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 230, 230));
@@ -115,6 +150,12 @@ namespace SET09402_Software_Engineering_40509167
                 {
                     emailOutputList.Items.Insert(0, messageContent);
                 }
+            }
+            else if (smsRadioButton.IsChecked == true)
+            {
+                messageType = "SMS:";
+                messageContent = $"{messageType} {uniqueID} Phone Number: {smsPhoneNumberInput.Text}; Message: {ExpandAbbreviations(messageInput.Text)}";
+                smsOutputList.Items.Insert(0, messageContent);
             }
             else if (tweetRadioButton.IsChecked == true)
             {
@@ -131,7 +172,6 @@ namespace SET09402_Software_Engineering_40509167
             messageInput.Text = "Body here";
             incidentComboBox.SelectedIndex = -1;
             incidentCheckBox.IsChecked = false;
-
             SaveMessagesToJson();
         }
 
@@ -148,12 +188,10 @@ namespace SET09402_Software_Engineering_40509167
         {
             var mentions = Regex.Matches(message, @"@\w+");
             var hashtags = Regex.Matches(message, @"#\w+");
-
             foreach (Match mention in mentions)
             {
                 MentionsList.Items.Insert(0, mention.Value);
             }
-
             foreach (Match hashtag in hashtags)
             {
                 TrendingList.Items.Insert(0, hashtag.Value);
@@ -176,7 +214,6 @@ namespace SET09402_Software_Engineering_40509167
                     break;
                 }
             }
-
             if (!found)
             {
                 SIRList.Items.Insert(0, incidentType + " 1");
@@ -285,7 +322,6 @@ namespace SET09402_Software_Engineering_40509167
                     EmailMessages = emailOutputList.Items.Cast<ListBoxItem>().Select(item => item.Content.ToString()).ToList(),
                     TweetMessages = tweetOutputList.Items.Cast<string>().ToList()
                 };
-
                 string json = JsonConvert.SerializeObject(messages, Formatting.Indented);
                 string filePath = @"C:\Users\SachaMiller\Downloads\test\messages.json";
                 File.WriteAllText(filePath, json);
@@ -296,7 +332,5 @@ namespace SET09402_Software_Engineering_40509167
                 MessageBox.Show($"An error occurred while saving to JSON: {ex.Message}");
             }
         }
-
-
     }
 }
