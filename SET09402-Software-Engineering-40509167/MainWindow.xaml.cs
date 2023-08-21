@@ -287,7 +287,7 @@ namespace SET09402_Software_Engineering_40509167
                 };
 
                 string json = JsonConvert.SerializeObject(messages, Formatting.Indented);
-                string filePath = @"C:\Users\SachaMiller\Downloads\test\";
+                string filePath = @"C:\Users\SachaMiller\Downloads\test\messages.json";
                 File.WriteAllText(filePath, json);
                 MessageBox.Show($"Messages saved to: {Path.GetFullPath(filePath)}");
             }
@@ -296,6 +296,7 @@ namespace SET09402_Software_Engineering_40509167
                 MessageBox.Show($"An error occurred while saving to JSON: {ex.Message}");
             }
         }
+
 
     }
 }
