@@ -13,10 +13,6 @@ public class EmailMessage : Message
 
     public static List<EmailMessage> SIRList = new List<EmailMessage>();
 
-    public bool IsSIR()
-    {
-        return Subject.StartsWith("SIR");
-    }
 
     public override string DetectType() => "Email";
 

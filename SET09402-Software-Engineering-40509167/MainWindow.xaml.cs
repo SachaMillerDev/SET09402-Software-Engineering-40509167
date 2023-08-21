@@ -125,7 +125,7 @@ namespace SET09402_Software_Engineering_40509167
                     Body = messageInput.Text
                 };
 
-                if (emailMessage.IsSIR())
+                if (incidentCheckBox.IsChecked == true && incidentComboBox.SelectedIndex != -1)
                 {
                     string sortCode = GenerateNextSortCode();
                     if (sortCode != null)
@@ -137,6 +137,7 @@ namespace SET09402_Software_Engineering_40509167
                         return;
                     }
                 }
+
 
                 messageType = "Email:";
                 messageContent = $"{messageType} {uniqueID} Recipient: {emailRecipientInput.Text}; Subject: {emailSubjectInput.Text}; Body: {ExpandAbbreviations(messageInput.Text)}";
