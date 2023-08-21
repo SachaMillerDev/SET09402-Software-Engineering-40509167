@@ -47,6 +47,7 @@ namespace SET09402_Software_Engineering_40509167
             InitializeComponent();
             emailRecipientInput.Visibility = Visibility.Collapsed;
             emailSubjectInput.Visibility = Visibility.Collapsed;
+            incidentComboBox.Visibility = Visibility.Collapsed; // Hide the ComboBox initially
         }
 
         private string GenerateNextSortCode()
