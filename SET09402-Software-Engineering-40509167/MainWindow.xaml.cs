@@ -250,6 +250,7 @@ namespace SET09402_Software_Engineering_40509167
 
 
 
+
         private void SmsRadioButton_Checked(object sender, RoutedEventArgs e)
         {
             smsPhoneNumberInput.Visibility = Visibility.Visible;
@@ -351,31 +352,22 @@ namespace SET09402_Software_Engineering_40509167
 
         private void SaveMessagesToJson()
         {
-            var emailMessages = emailOutputList.Items.Cast<ListBoxItem>().Select(item =>
-            {
-                var emailContent = item.Content as EmailMessage; // Extract the content as EmailMessage
-                if (emailContent != null)
-                {
-                    return new EmailMessage
-                    {
-                        Body = emailContent.Body,
-                        QuarantineList = emailContent.QuarantineList
-                    };
-                }
-                return null;
-            }).Where(email => email != null).ToList(); // Filter out any null values
+            var emailMessages = emailOutputList.Items.Cast<EmailMessage>().ToList();
+            var sirMessages = EmailMessage.SIRList;
 
             var messages = new
             {
                 SMSMessages = smsOutputList.Items.Cast<string>().ToList(),
                 EmailMessages = emailMessages,
-                TweetMessages = tweetOutputList.Items.Cast<string>().ToList()
+                TweetMessages = tweetOutputList.Items.Cast<string>().ToList(),
+                SIRMessages = sirMessages
             };
 
             string json = JsonConvert.SerializeObject(messages, Formatting.Indented);
             string filePath = @"C:\Users\SachaMiller\Downloads\test\messages.json";
             File.WriteAllText(filePath, json);
         }
+
 
     }
 }
