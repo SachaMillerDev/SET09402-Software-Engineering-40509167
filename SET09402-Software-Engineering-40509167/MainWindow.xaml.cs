@@ -211,11 +211,19 @@ namespace SET09402_Software_Engineering_40509167
                 if (content.StartsWith(incidentType))
                 {
                     string[] parts = content.Split(' ');
-                    int count = int.Parse(parts[1]) + 1;
-                    SIRList.Items.Remove(item);
-                    SIRList.Items.Insert(0, incidentType + " " + count);
-                    found = true;
-                    break;
+                    try
+                    {
+                        int count = int.Parse(parts[1]) + 1;
+                        SIRList.Items.Remove(item);
+                        SIRList.Items.Insert(0, incidentType + " " + count);
+                        found = true;
+                        break;
+                    }
+                    catch (FormatException)
+                    {
+                        MessageBox.Show($"Failed to parse count from string: '{parts[1]}'");
+                        return;
+                    }
                 }
             }
             if (!found)
@@ -223,16 +231,17 @@ namespace SET09402_Software_Engineering_40509167
                 SIRList.Items.Insert(0, incidentType + " 1");
             }
 
-            // Add this block to sort the SIRList by tally in descending order
             var sortedSIRList = SIRList.Items.Cast<string>()
-                                             .OrderByDescending(item => int.Parse(item.Split(' ')[1]))
-                                             .ToList();
+                .OrderByDescending(item => int.Parse(item.Split(' ')[1]))
+                .ToList();
+
             SIRList.Items.Clear();
             foreach (var sir in sortedSIRList)
             {
                 SIRList.Items.Add(sir);
             }
         }
+
 
 
         private void SmsRadioButton_Checked(object sender, RoutedEventArgs e)
