@@ -354,31 +354,50 @@ namespace SET09402_Software_Engineering_40509167
             incidentComboBox.SelectedIndex = -1;
         }
 
+
         private void SaveMessagesToJson()
+        {
+            // Extracting SMS messages
+            var smsMessages = smsOutputList.Items.Cast<string>().ToList();
+
+            // Extracting email messages
+            var emailMessages = emailOutputList.Items.Cast<object>().Select(item =>
             {
-            var emailMessages = emailOutputList.Items.Cast<ListBoxItem>().Select(item => item.Content as EmailMessage).Where(email => email != null).ToList();
-            var quarantinedUrls = QuarantinedUrlsList.Items.Cast<string>().ToList();
-            var dataToSave = new
-            {
-                Messages = new
+                if (item is ListBoxItem listBoxItem)
                 {
-                    SMSMessages = smsOutputList.Items.Cast<string>().ToList(),
-                    EmailMessages = emailMessages,
-                    TweetMessages = tweetOutputList.Items.Cast<string>().ToList(),
-                },
-                Lists = new
-                {
-                    Hashtags = TrendingList.Items.Cast<string>().ToList(),
-                    Mentions = MentionsList.Items.Cast<string>().ToList(),
-                    SIRs = SIRList.Items.Cast<string>().ToList(),
-                    QuarantinedURLs = quarantinedUrls
+                    return listBoxItem.Content as string;
                 }
+                return item as string;
+            }).Where(email => !string.IsNullOrEmpty(email)).ToList();
+
+            // Extracting tweet messages
+            var tweetMessages = tweetOutputList.Items.Cast<string>().ToList();
+
+            // Extracting hashtags, mentions, and SIR lists
+            var hashtags = TrendingList.Items.Cast<string>().ToList();
+            var mentions = MentionsList.Items.Cast<string>().ToList();
+            var sirList = SIRList.Items.Cast<string>().ToList();
+            var quarantinedUrls = QuarantinedUrlsList.Items.Cast<string>().ToList();
+
+            // Creating the object to be serialized
+            var messages = new
+            {
+                SMSMessages = smsMessages,
+                EmailMessages = emailMessages,
+                TweetMessages = tweetMessages,
+                Hashtags = hashtags,
+                Mentions = mentions,
+                SIRList = sirList,
+                QuarantinedUrls = quarantinedUrls
             };
-            string json = JsonConvert.SerializeObject(dataToSave, Formatting.Indented);
+
+            // Serializing and writing to file
+            string json = JsonConvert.SerializeObject(messages, Formatting.Indented);
             string filePath = @"C:\Users\SachaMiller\Downloads\test\messages.json";
             File.WriteAllText(filePath, json);
         }
 
 
-        }
+
     }
+}
