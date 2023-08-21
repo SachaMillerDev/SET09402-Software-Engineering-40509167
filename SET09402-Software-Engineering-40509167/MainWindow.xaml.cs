@@ -348,9 +348,9 @@ namespace SET09402_Software_Engineering_40509167
                 return emailContent;
             }).Where(email => email != null).ToList(); // Filter out any null values
 
-            var hashtagList = hashtagOutputList.Items.Cast<string>().ToList();
-            var mentionList = mentionOutputList.Items.Cast<string>().ToList();
-            var sirList = sirOutputList.Items.Cast<string>().ToList();
+            var hashtagList = HashtagList.Items.Cast<string>().ToList();
+            var mentionList = MentionList.Items.Cast<string>().ToList();
+            var sirList = SIRList.Items.Cast<string>().ToList();
 
             var dataToSave = new
             {
@@ -372,8 +372,6 @@ namespace SET09402_Software_Engineering_40509167
             string filePath = @"C:\Users\SachaMiller\Downloads\test\messages.json";
             File.WriteAllText(filePath, json);
         }
-
-
 
 
     }
