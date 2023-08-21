@@ -132,6 +132,14 @@ namespace SET09402_Software_Engineering_40509167
                     Body = messageInput.Text
                 };
 
+                // Sanitize URLs in the email body
+                var urls = ExtractURLs(emailMessage.Body);
+                foreach (var url in urls)
+                {
+                    emailMessage.Body = emailMessage.Body.Replace(url, "[URL Quarantined]");
+                    QuarantinedUrlsList.Items.Insert(0, url); // Add to a dedicated list
+                }
+
                 if (incidentCheckBox.IsChecked == true && incidentComboBox.SelectedIndex != -1)
                 {
                     string sortCode = GenerateNextSortCode();
@@ -145,9 +153,8 @@ namespace SET09402_Software_Engineering_40509167
                     }
                 }
 
-
                 messageType = "Email:";
-                messageContent = $"{messageType} {uniqueID} Recipient: {emailRecipientInput.Text}; Subject: {emailSubjectInput.Text}; Body: {ExpandAbbreviations(messageInput.Text)}";
+                messageContent = $"{messageType} {uniqueID} Recipient: {emailRecipientInput.Text}; Subject: {emailSubjectInput.Text}; Body: {ExpandAbbreviations(emailMessage.Body)}";
 
                 if (incidentCheckBox.IsChecked == true)
                 {
@@ -348,17 +355,9 @@ namespace SET09402_Software_Engineering_40509167
         }
 
         private void SaveMessagesToJson()
-        {
-            var emailMessages = emailOutputList.Items.Cast<ListBoxItem>().Select(item =>
             {
-                var emailContent = item.Content as EmailMessage; // Extract the content as EmailMessage
-                return emailContent;
-            }).Where(email => email != null).ToList(); // Filter out any null values
-
-            var hashtagList = TrendingList.Items.Cast<string>().ToList();
-            var mentionList = MentionsList.Items.Cast<string>().ToList();
-            var sirList = SIRList.Items.Cast<string>().ToList();
-
+            var emailMessages = emailOutputList.Items.Cast<ListBoxItem>().Select(item => item.Content as EmailMessage).Where(email => email != null).ToList();
+            var quarantinedUrls = QuarantinedUrlsList.Items.Cast<string>().ToList();
             var dataToSave = new
             {
                 Messages = new
@@ -369,17 +368,17 @@ namespace SET09402_Software_Engineering_40509167
                 },
                 Lists = new
                 {
-                    Hashtags = hashtagList,
-                    Mentions = mentionList,
-                    SIRs = sirList
+                    Hashtags = TrendingList.Items.Cast<string>().ToList(),
+                    Mentions = MentionsList.Items.Cast<string>().ToList(),
+                    SIRs = SIRList.Items.Cast<string>().ToList(),
+                    QuarantinedURLs = quarantinedUrls
                 }
             };
-
             string json = JsonConvert.SerializeObject(dataToSave, Formatting.Indented);
             string filePath = @"C:\Users\SachaMiller\Downloads\test\messages.json";
             File.WriteAllText(filePath, json);
         }
 
 
+        }
     }
-}
