@@ -202,7 +202,6 @@ namespace SET09402_Software_Engineering_40509167
                 TrendingList.Items.Insert(0, hashtag.Value);
             }
         }
-
         private void UpdateSIRList(string incidentType)
         {
             bool found = false;
@@ -223,7 +222,18 @@ namespace SET09402_Software_Engineering_40509167
             {
                 SIRList.Items.Insert(0, incidentType + " 1");
             }
+
+            // Add this block to sort the SIRList by tally in descending order
+            var sortedSIRList = SIRList.Items.Cast<string>()
+                                             .OrderByDescending(item => int.Parse(item.Split(' ')[1]))
+                                             .ToList();
+            SIRList.Items.Clear();
+            foreach (var sir in sortedSIRList)
+            {
+                SIRList.Items.Add(sir);
+            }
         }
+
 
         private void SmsRadioButton_Checked(object sender, RoutedEventArgs e)
         {
@@ -326,15 +336,27 @@ namespace SET09402_Software_Engineering_40509167
 
         private void SaveMessagesToJson()
         {
-                var messages = new
+            var emailMessages = emailOutputList.Items.Cast<ListBoxItem>().Select(item =>
+            {
+                var email = new EmailMessage
                 {
-                    SMSMessages = smsOutputList.Items.Cast<string>().ToList(),
-                    EmailMessages = emailOutputList.Items.Cast<ListBoxItem>().Select(item => item.Content.ToString()).ToList(),
-                    TweetMessages = tweetOutputList.Items.Cast<string>().ToList()
+                    Body = item.Content.ToString(),
+                    QuarantineList = ((EmailMessage)item).QuarantineList // Add this line
                 };
-                string json = JsonConvert.SerializeObject(messages, Formatting.Indented);
-                string filePath = @"C:\Users\SachaMiller\Downloads\test\messages.json";
-                File.WriteAllText(filePath, json);
+                return email;
+            }).ToList();
+
+            var messages = new
+            {
+                SMSMessages = smsOutputList.Items.Cast<string>().ToList(),
+                EmailMessages = emailMessages,
+                TweetMessages = tweetOutputList.Items.Cast<string>().ToList()
+            };
+
+            string json = JsonConvert.SerializeObject(messages, Formatting.Indented);
+            string filePath = @"C:\Users\SachaMiller\Downloads\test\messages.json";
+            File.WriteAllText(filePath, json);
         }
+
     }
 }
