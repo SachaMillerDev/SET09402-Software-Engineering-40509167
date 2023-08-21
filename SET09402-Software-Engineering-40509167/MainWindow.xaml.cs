@@ -47,7 +47,8 @@ namespace SET09402_Software_Engineering_40509167
             InitializeComponent();
             emailRecipientInput.Visibility = Visibility.Collapsed;
             emailSubjectInput.Visibility = Visibility.Collapsed;
-            incidentComboBox.Visibility = Visibility.Collapsed; // Hide the ComboBox initially
+            incidentCheckBox.Visibility = Visibility.Collapsed;
+            incidentComboBox.Visibility = Visibility.Collapsed;
         }
 
         private string GenerateNextSortCode()
@@ -240,7 +241,14 @@ namespace SET09402_Software_Engineering_40509167
             emailRecipientInput.Visibility = Visibility.Visible;
             emailSubjectInput.Visibility = Visibility.Visible;
             incidentCheckBox.Visibility = Visibility.Visible;
-            incidentComboBox.Visibility = Visibility.Visible;
+            if (incidentCheckBox.IsChecked == true)
+            {
+                incidentComboBox.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                incidentComboBox.Visibility = Visibility.Collapsed;
+            }
             messageInput.Text = "Body here";
             messageInput.Foreground = System.Windows.Media.Brushes.Gray;
         }
