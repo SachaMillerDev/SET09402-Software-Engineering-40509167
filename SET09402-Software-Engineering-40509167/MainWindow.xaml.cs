@@ -338,13 +338,17 @@ namespace SET09402_Software_Engineering_40509167
         {
             var emailMessages = emailOutputList.Items.Cast<ListBoxItem>().Select(item =>
             {
-                var email = new EmailMessage
+                var emailContent = item.Content as EmailMessage; // Extract the content as EmailMessage
+                if (emailContent != null)
                 {
-                    Body = item.Content.ToString(),
-                    QuarantineList = ((EmailMessage)item).QuarantineList // Add this line
-                };
-                return email;
-            }).ToList();
+                    return new EmailMessage
+                    {
+                        Body = emailContent.Body,
+                        QuarantineList = emailContent.QuarantineList
+                    };
+                }
+                return null;
+            }).Where(email => email != null).ToList(); // Filter out any null values
 
             var messages = new
             {
