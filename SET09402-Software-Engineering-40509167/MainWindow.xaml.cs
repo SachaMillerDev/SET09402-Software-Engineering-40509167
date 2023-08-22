@@ -76,12 +76,22 @@ namespace SET09402_Software_Engineering_40509167
                 TrendingList.Items.Clear();
                 foreach (var hashtag in messagesData.Hashtags)
                 {
+                    var parts = hashtag.Split(' ');
+                    if (parts.Length > 1 && int.TryParse(parts.Last().Trim('(', ')'), out int count))
+                    {
+                        hashtagsDictionary[parts[0]] = count;
+                    }
                     TrendingList.Items.Add(hashtag);
                 }
 
                 MentionsList.Items.Clear();
                 foreach (var mention in messagesData.Mentions)
                 {
+                    var parts = mention.Split(' ');
+                    if (parts.Length > 1 && int.TryParse(parts.Last().Trim('(', ')'), out int count))
+                    {
+                        mentionsDictionary[parts[0]] = count;
+                    }
                     MentionsList.Items.Add(mention);
                 }
 
@@ -95,6 +105,11 @@ namespace SET09402_Software_Engineering_40509167
                 QuarantinedUrlsList.Items.Clear();
                 foreach (var url in messagesData.QuarantinedUrls)
                 {
+                    var parts = url.Split(' ');
+                    if (parts.Length > 1 && int.TryParse(parts.Last().Trim('(', ')'), out int count))
+                    {
+                        quarantinedUrlsDictionary[parts[0]] = count;
+                    }
                     QuarantinedUrlsList.Items.Add(url);
                 }
             }
