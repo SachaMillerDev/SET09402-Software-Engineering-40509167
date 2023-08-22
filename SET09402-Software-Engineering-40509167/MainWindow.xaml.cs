@@ -150,7 +150,7 @@ namespace SET09402_Software_Engineering_40509167
             }
             return $"{sortCodeSegment1:00}-{sortCodeSegment2:00}-{sortCodeSegment3:00}";
         }
-        private void ImportJsonButton_Click(object sender, RoutedEventArgs e)
+        private void ImportJsonButton_Click(object sender, RoutedEventArgs e) //allows files to be uploaded 
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
