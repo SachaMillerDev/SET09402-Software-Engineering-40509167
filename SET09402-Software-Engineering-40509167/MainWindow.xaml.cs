@@ -150,7 +150,7 @@ namespace SET09402_Software_Engineering_40509167
             }
             return $"{sortCodeSegment1:00}-{sortCodeSegment2:00}-{sortCodeSegment3:00}";
         }
-        private void ImportJsonButton_Click(object sender, RoutedEventArgs e) //allows files to be uploaded 
+        private void ImportJsonButton_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
@@ -159,45 +159,135 @@ namespace SET09402_Software_Engineering_40509167
                 string jsonContent = File.ReadAllText(openFileDialog.FileName);
                 MessagesData importedData = JsonConvert.DeserializeObject<MessagesData>(jsonContent);
 
-                // Merge the imported data with the existing data
+                // Update the counters based on the imported data
+                int highestSMSId = smsMessageIDCounter;
                 foreach (var item in importedData.SMSMessages)
                 {
-                    smsOutputList.Items.Add(item);
+                    string idStr = item.Substring(1, 9); // Assuming the ID format is "Sxxxxxxxxx"
+                    if (int.TryParse(idStr, out int id))
+                    {
+                        highestSMSId = Math.Max(highestSMSId, id);
+                    }
+                    if (!smsOutputList.Items.Contains(item))
+                    {
+                        smsOutputList.Items.Add(item);
+                    }
                 }
+                smsMessageIDCounter = highestSMSId + 1;
 
+                int highestEmailId = emailMessageIDCounter;
                 foreach (var item in importedData.EmailMessages)
                 {
-                    emailOutputList.Items.Add(item);
+                    string idStr = item.Substring(1, 9); // Assuming the ID format is "Exxxxxxxx"
+                    if (int.TryParse(idStr, out int id))
+                    {
+                        highestEmailId = Math.Max(highestEmailId, id);
+                    }
+                    if (!emailOutputList.Items.Contains(item))
+                    {
+                        if (item.Contains("Incident Type:"))
+                        {
+                            ListBoxItem listItem = new ListBoxItem();
+                            listItem.Content = item;
+                            listItem.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 230, 230));
+                            emailOutputList.Items.Add(listItem);
+                        }
+                        else
+                        {
+                            emailOutputList.Items.Add(item);
+                        }
+                    }
                 }
+                emailMessageIDCounter = highestEmailId + 1;
 
+                int highestTweetId = tweetMessageIDCounter;
                 foreach (var item in importedData.TweetMessages)
                 {
-                    tweetOutputList.Items.Add(item);
+                    string idStr = item.Substring(1, 9); // Assuming the ID format is "Txxxxxxxxx"
+                    if (int.TryParse(idStr, out int id))
+                    {
+                        highestTweetId = Math.Max(highestTweetId, id);
+                    }
+                    if (!tweetOutputList.Items.Contains(item))
+                    {
+                        tweetOutputList.Items.Add(item);
+                    }
                 }
+                tweetMessageIDCounter = highestTweetId + 1;
 
+                // Update the sort code segments
+                sortCodeSegment1 = Math.Max(sortCodeSegment1, importedData.SortCodeSegment1 ?? 0);
+                sortCodeSegment2 = Math.Max(sortCodeSegment2, importedData.SortCodeSegment2 ?? 0);
+                sortCodeSegment3 = Math.Max(sortCodeSegment3, importedData.SortCodeSegment3 ?? 0);
+
+                // Merge the imported data with the existing data for other lists
                 foreach (var item in importedData.Hashtags)
                 {
-                    TrendingList.Items.Add(item);
+                    if (!TrendingList.Items.Contains(item))
+                    {
+                        TrendingList.Items.Add(item);
+                    }
                 }
 
                 foreach (var item in importedData.Mentions)
                 {
-                    MentionsList.Items.Add(item);
+                    if (!MentionsList.Items.Contains(item))
+                    {
+                        MentionsList.Items.Add(item);
+                    }
                 }
 
                 foreach (var item in importedData.SIRList)
                 {
-                    SIRList.Items.Add(item);
+                    if (!SIRList.Items.Contains(item))
+                    {
+                        SIRList.Items.Add(item);
+                    }
                 }
 
                 foreach (var item in importedData.QuarantinedUrls)
                 {
-                    QuarantinedUrlsList.Items.Add(item);
+                    if (!QuarantinedUrlsList.Items.Contains(item))
+                    {
+                        QuarantinedUrlsList.Items.Add(item);
+                    }
                 }
 
+                // Update the hashtags dictionary with imported data
+                foreach (var item in importedData.Hashtags)
+                {
+                    var parts = item.Split(' ');
+                    if (parts.Length > 1 && int.TryParse(parts.Last().Trim('(', ')'), out int count))
+                    {
+                        if (hashtagsDictionary.ContainsKey(parts[0]))
+                        {
+                            hashtagsDictionary[parts[0]] = Math.Max(hashtagsDictionary[parts[0]], count);
+                        }
+                        else
+                        {
+                            hashtagsDictionary[parts[0]] = count;
+                        }
+                    }
+                }
+
+                // Update the mentions dictionary with imported data
+                foreach (var item in importedData.Mentions)
+                {
+                    var parts = item.Split(' ');
+                    if (parts.Length > 1 && int.TryParse(parts.Last().Trim('(', ')'), out int count))
+                    {
+                        if (mentionsDictionary.ContainsKey(parts[0]))
+                        {
+                            mentionsDictionary[parts[0]] = Math.Max(mentionsDictionary[parts[0]], count);
+                        }
+                        else
+                        {
+                            mentionsDictionary[parts[0]] = count;
+                        }
+                    }
+                }
             }
         }
-
 
         private void LoadAbbreviationsFromCSV()
         {
