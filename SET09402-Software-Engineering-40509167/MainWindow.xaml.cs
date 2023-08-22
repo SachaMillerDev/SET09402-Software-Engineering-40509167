@@ -160,11 +160,12 @@ namespace SET09402_Software_Engineering_40509167
         {
             if (smsRadioButton.IsChecked == true)
             {
-                if (!Regex.IsMatch(smsPhoneNumberInput.Text, @"^\+\d{1,14}$") || smsPhoneNumberInput.Text.Length > 14)
+                if (!Regex.IsMatch(smsPhoneNumberInput.Text, @"^(\+)?\d{1,14}$") || smsPhoneNumberInput.Text.Length > 14)
                 {
                     MessageBox.Show("Invalid phone number. Ensure it's numeric and up to 14 characters.");
                     return;
                 }
+
             }
 
             if (tweetRadioButton.IsChecked == true)
