@@ -171,38 +171,51 @@ namespace SET09402_Software_Engineering_40509167
                     MessageBox.Show("Invalid phone number. Ensure it's numeric and up to 14 characters.");
                     return;
                 }
-
-            }
-
-            if (tweetRadioButton.IsChecked == true)
-            {
-                if (!tweetUsernameInput.Text.StartsWith("@") || tweetUsernameInput.Text.Length > 14)
+                // New SMS Message Body Validation
+                if (messageInput.Text.Length > 140)
                 {
-                    MessageBox.Show("Invalid username. It should start with '@' and be up to 14 characters.");
+                    MessageBox.Show("SMS message body should be a maximum of 140 characters long.");
                     return;
                 }
             }
+
+
+            if (tweetRadioButton.IsChecked == true)
+            {
+                if (!tweetUsernameInput.Text.StartsWith("@") || tweetUsernameInput.Text.Length > 15)
+                {
+                    MessageBox.Show("Invalid username. It should start with '@' and be up to 15 characters.");
+                    return;
+                }
+                // New Tweet Message Body Validation
+                if (messageInput.Text.Length > 140)
+                {
+                    MessageBox.Show("Tweet message body should be a maximum of 140 characters long.");
+                    return;
+                }
+            }
+
 
             if (emailRadioButton.IsChecked == true)
             {
                 if (!Regex.IsMatch(emailRecipientInput.Text, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
                 {
-                    MessageBox.Show("Invalid email format.");
+                    MessageBox.Show("Invalid email format. expected format e.g. xxx@gmail.com ");
                     return;
                 }
-
+                // New Email Subject and Body Validation
                 if (emailSubjectInput.Text.Length > 20)
                 {
-                    MessageBox.Show("Subject should be up to 20 characters.");
+                    MessageBox.Show("Email subject should be a maximum of 20 characters long.");
                     return;
                 }
-
-                if (incidentCheckBox.IsChecked == true && incidentComboBox.SelectedIndex == -1)
+                if (messageInput.Text.Length > 1028)
                 {
-                    MessageBox.Show("Please select an incident type or uncheck the SIR box.");
+                    MessageBox.Show("Email body should be a maximum of 1028 characters long.");
                     return;
                 }
             }
+
 
             string messageType = "";
             string messageContent = "";
