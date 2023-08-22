@@ -152,7 +152,14 @@ namespace SET09402_Software_Engineering_40509167
                     }
 
                     // Add the URL with its count to the QuarantinedUrlsList
-                    QuarantinedUrlsList.Items.Insert(0, $"{url} ({quarantinedUrlsDictionary[url]})");
+                    string formattedUrl = $"{url} ({quarantinedUrlsDictionary[url]})";
+                    var existingItem = QuarantinedUrlsList.Items.Cast<string>().FirstOrDefault(item => item.StartsWith(url));
+                    if (existingItem != null)
+                    {
+                        QuarantinedUrlsList.Items.Remove(existingItem);
+                    }
+                    QuarantinedUrlsList.Items.Insert(0, formattedUrl);
+
                 }
                 var sortedUrls = QuarantinedUrlsList.Items.Cast<string>()
                 .OrderByDescending(item =>
