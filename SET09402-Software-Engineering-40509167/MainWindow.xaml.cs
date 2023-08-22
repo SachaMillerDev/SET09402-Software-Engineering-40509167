@@ -48,6 +48,52 @@ namespace SET09402_Software_Engineering_40509167
         public MainWindow()
         {
             InitializeComponent();
+            var messagesData = ReadMessagesFromJson();
+            if (messagesData != null)
+            {
+                smsOutputList.Items.Clear();
+                foreach (var message in messagesData.SMSMessages)
+                {
+                    smsOutputList.Items.Add(message);
+                }
+
+                emailOutputList.Items.Clear();
+                foreach (var message in messagesData.EmailMessages)
+                {
+                    emailOutputList.Items.Add(message);
+                }
+
+                tweetOutputList.Items.Clear();
+                foreach (var message in messagesData.TweetMessages)
+                {
+                    tweetOutputList.Items.Add(message);
+                }
+
+                TrendingList.Items.Clear();
+                foreach (var hashtag in messagesData.Hashtags)
+                {
+                    TrendingList.Items.Add(hashtag);
+                }
+
+                MentionsList.Items.Clear();
+                foreach (var mention in messagesData.Mentions)
+                {
+                    MentionsList.Items.Add(mention);
+                }
+
+                SIRList.Items.Clear();
+                foreach (var sir in messagesData.SIRList)
+                {
+                    SIRList.Items.Add(sir);
+                }
+
+                QuarantinedUrlsList.Items.Clear();
+                foreach (var url in messagesData.QuarantinedUrls)
+                {
+                    QuarantinedUrlsList.Items.Add(url);
+                }
+            }
+
             emailRecipientInput.Visibility = Visibility.Collapsed;
             emailSubjectInput.Visibility = Visibility.Collapsed;
             incidentCheckBox.Visibility = Visibility.Collapsed;
