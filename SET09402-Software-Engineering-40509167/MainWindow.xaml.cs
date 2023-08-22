@@ -218,7 +218,7 @@ namespace SET09402_Software_Engineering_40509167
 
                     // Add the URL with its count to the QuarantinedUrlsList
                     string formattedUrl = $"{url} ({quarantinedUrlsDictionary[url]})";
-                    var existingItem = QuarantinedUrlsList.Items.Cast<string>().FirstOrDefault(item => item.StartsWith(url));
+                    var existingItem = QuarantinedUrlsList.Items.Cast<object>().Select(item => item.ToString()).FirstOrDefault(itemStr => itemStr.StartsWith(url));
                     if (existingItem != null)
                     {
                         QuarantinedUrlsList.Items.Remove(existingItem);
@@ -226,8 +226,8 @@ namespace SET09402_Software_Engineering_40509167
                     QuarantinedUrlsList.Items.Insert(0, formattedUrl);
 
                 }
-                var sortedUrls = QuarantinedUrlsList.Items.Cast<string>()
-                .OrderByDescending(item =>
+                var sortedUrls = QuarantinedUrlsList.Items.Cast<object>().Select(item => item.ToString())
+                 .OrderByDescending(item =>
                 {
                     var parts = item.Split(' ');
                     return parts.Length > 1 && int.TryParse(parts.Last().Trim('(', ')'), out int count) ? count : 0;
@@ -357,7 +357,7 @@ namespace SET09402_Software_Engineering_40509167
             }
 
             // Sort the SIR list
-            var sortedList = SIRList.Items.Cast<string>()
+            var sortedList = SIRList.Items.Cast<object>().Select(item => item.ToString())
                 .OrderByDescending(item =>
                 {
                     var splitItem = item.Split(' ');
@@ -475,7 +475,8 @@ namespace SET09402_Software_Engineering_40509167
         private void SaveMessagesToJson()
         {
             // Extracting SMS messages
-            var smsMessages = smsOutputList.Items.Cast<string>().ToList();
+            var smsMessages = smsOutputList.Items.Cast<object>().Select(item => item.ToString()).ToList();
+
 
             // Extracting email messages
             var emailMessages = emailOutputList.Items.Cast<object>().Select(item =>
@@ -488,13 +489,18 @@ namespace SET09402_Software_Engineering_40509167
             }).Where(email => !string.IsNullOrEmpty(email)).ToList();
 
             // Extracting tweet messages
-            var tweetMessages = tweetOutputList.Items.Cast<string>().ToList();
+            var tweetMessages = tweetOutputList.Items.Cast<object>().Select(item => item.ToString()).ToList();
+
 
             // Extracting hashtags, mentions, and SIR lists
-            var hashtags = TrendingList.Items.Cast<string>().ToList();
-            var mentions = MentionsList.Items.Cast<string>().ToList();
-            var sirList = SIRList.Items.Cast<string>().ToList();
-            var quarantinedUrls = QuarantinedUrlsList.Items.Cast<string>().ToList();
+            var hashtags = TrendingList.Items.Cast<object>().Select(item => item.ToString()).ToList();
+
+            var mentions = MentionsList.Items.Cast<object>().Select(item => item.ToString()).ToList();
+
+            var sirList = SIRList.Items.Cast<object>().Select(item => item.ToString()).ToList();
+
+            var quarantinedUrls = QuarantinedUrlsList.Items.Cast<object>().Select(item => item.ToString()).ToList();
+
 
             // Creating the object to be serialized
             var messages = new
