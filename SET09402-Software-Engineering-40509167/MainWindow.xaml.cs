@@ -73,16 +73,17 @@ namespace SET09402_Software_Engineering_40509167
                 }
 
                 TrendingList.Items.Clear();
-                foreach (var hashtag in messagesData.Hashtags)
+                foreach (var hashtag in messagesData.Hashtags.ToObject<List<string>>())
                 {
                     TrendingList.Items.Add(hashtag);
                 }
 
                 MentionsList.Items.Clear();
-                foreach (var mention in messagesData.Mentions)
+                foreach (var mention in messagesData.Mentions.ToObject<List<string>>())
                 {
                     MentionsList.Items.Add(mention);
                 }
+
 
                 SIRList.Items.Clear();
                 foreach (var sir in messagesData.SIRList)
