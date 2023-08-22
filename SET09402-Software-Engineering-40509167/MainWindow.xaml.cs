@@ -30,7 +30,8 @@ namespace SET09402_Software_Engineering_40509167
         {
             InitializeComponent();
             LoadAbbreviationsFromCSV();
-            var messagesData = ReadMessagesFromJson();
+            MessagesData messagesData = ReadMessagesFromJson();
+
             if (messagesData != null)
             {
                 sortCodeSegment1 = messagesData.SortCodeSegment1 ?? sortCodeSegment1;
@@ -73,13 +74,13 @@ namespace SET09402_Software_Engineering_40509167
                 }
 
                 TrendingList.Items.Clear();
-                foreach (var hashtag in messagesData.Hashtags.ToObject<List<string>>())
+                foreach (var hashtag in messagesData.Hashtags)
                 {
                     TrendingList.Items.Add(hashtag);
                 }
 
                 MentionsList.Items.Clear();
-                foreach (var mention in messagesData.Mentions.ToObject<List<string>>())
+                foreach (var mention in messagesData.Mentions)
                 {
                     MentionsList.Items.Add(mention);
                 }
@@ -103,15 +104,14 @@ namespace SET09402_Software_Engineering_40509167
             incidentCheckBox.Visibility = Visibility.Collapsed;
             incidentComboBox.Visibility = Visibility.Collapsed;
         }
-        private dynamic ReadMessagesFromJson()
+        private MessagesData ReadMessagesFromJson()
         {
             string filePath = @"C:\Users\SachaMiller\Downloads\test\messages.json";
-            if (!File.Exists(filePath))
-                return null;
-
+            if (!File.Exists(filePath)) return null;
             string json = File.ReadAllText(filePath);
-            return JsonConvert.DeserializeObject(json);
+            return JsonConvert.DeserializeObject<MessagesData>(json);
         }
+
 
         private string GenerateNextSortCode()
         {
@@ -527,6 +527,22 @@ namespace SET09402_Software_Engineering_40509167
             incidentComboBox.Visibility = Visibility.Collapsed;
             incidentComboBox.SelectedIndex = -1;
         }
+        public class MessagesData
+        {
+            public List<string> SMSMessages { get; set; } = new List<string>();
+            public List<string> EmailMessages { get; set; } = new List<string>();
+            public List<string> TweetMessages { get; set; } = new List<string>();
+            public List<string> Hashtags { get; set; } = new List<string>();
+            public List<string> Mentions { get; set; } = new List<string>();
+            public List<string> SIRList { get; set; } = new List<string>();
+            public List<string> QuarantinedUrls { get; set; } = new List<string>();
+            public int? SortCodeSegment1 { get; set; }
+            public int? SortCodeSegment2 { get; set; }
+            public int? SortCodeSegment3 { get; set; }
+            public int? SmsMessageIDCounter { get; set; }
+            public int? EmailMessageIDCounter { get; set; }
+            public int? TweetMessageIDCounter { get; set; }
+        }
 
 
         private void SaveMessagesToJson()
@@ -590,7 +606,7 @@ namespace SET09402_Software_Engineering_40509167
             }
 
             // Create the merged data object
-            var messages = new
+            MessagesData messages = new MessagesData
             {
                 SMSMessages = smsMessages,
                 EmailMessages = emailMessages,
