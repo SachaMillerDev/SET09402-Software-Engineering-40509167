@@ -131,10 +131,11 @@ namespace SET09402_Software_Engineering_40509167
         }
         private List<string> ExtractURLs(string message)
         {
-            var urlPattern = @"https://www\.[\w\-\.]+";
+            var urlPattern = @"\b(?:https?://)?(?:www\.)?[\w\-\.]+\.\w+\b";
             var matches = Regex.Matches(message, urlPattern);
             return matches.Cast<Match>().Select(m => m.Value).ToList();
         }
+
 
 
         private void SendButton_Click(object sender, RoutedEventArgs e)
