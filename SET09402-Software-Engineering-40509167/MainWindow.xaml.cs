@@ -157,9 +157,47 @@ namespace SET09402_Software_Engineering_40509167
             if (openFileDialog.ShowDialog() == true)
             {
                 string jsonContent = File.ReadAllText(openFileDialog.FileName);
-                // TODO: Add the JSON content to your program's JSON data.
+                MessagesData importedData = JsonConvert.DeserializeObject<MessagesData>(jsonContent);
+
+                // Merge the imported data with the existing data
+                foreach (var item in importedData.SMSMessages)
+                {
+                    smsOutputList.Items.Add(item);
+                }
+
+                foreach (var item in importedData.EmailMessages)
+                {
+                    emailOutputList.Items.Add(item);
+                }
+
+                foreach (var item in importedData.TweetMessages)
+                {
+                    tweetOutputList.Items.Add(item);
+                }
+
+                foreach (var item in importedData.Hashtags)
+                {
+                    TrendingList.Items.Add(item);
+                }
+
+                foreach (var item in importedData.Mentions)
+                {
+                    MentionsList.Items.Add(item);
+                }
+
+                foreach (var item in importedData.SIRList)
+                {
+                    SIRList.Items.Add(item);
+                }
+
+                foreach (var item in importedData.QuarantinedUrls)
+                {
+                    QuarantinedUrlsList.Items.Add(item);
+                }
+
             }
         }
+
 
         private void LoadAbbreviationsFromCSV()
         {
