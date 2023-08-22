@@ -6,6 +6,10 @@ using System.Windows;
 using System.Windows.Controls;
 using Newtonsoft.Json;
 using System.IO;
+using System.IO;
+using System.Globalization;
+using CsvHelper;
+
 
 namespace SET09402_Software_Engineering_40509167
 {
@@ -20,37 +24,12 @@ namespace SET09402_Software_Engineering_40509167
         private int smsMessageIDCounter = 1;
         private int emailMessageIDCounter = 1;
         private int tweetMessageIDCounter = 1;
-
-
-        private Dictionary<string, string> abbreviations = new Dictionary<string, string>
-        {
-            {"LOL", "Laugh Out Loud"},
-            {"BRB", "Be Right Back"},
-            {"GTG", "Got To Go"},
-            {"TTYL", "Talk To You Later"},
-            {"OMG", "Oh My God"},
-            {"IDK", "I Don't Know"},
-            {"IMO", "In My Opinion"},
-            {"IMHO", "In My Humble Opinion"},
-            {"BFF", "Best Friends Forever"},
-            {"FYI", "For Your Information"},
-            {"ROFL", "Rolling On the Floor Laughing"},
-            {"SMH", "Shaking My Head"},
-            {"TMI", "Too Much Information"},
-            {"YOLO", "You Only Live Once"},
-            {"ICYMI", "In Case You Missed It"},
-            {"FOMO", "Fear Of Missing Out"},
-            {"TL;DR", "Too Long; Didn't Read"},
-            {"BTW", "By The Way"},
-            {"DM", "Direct Message"},
-            {"NSFW", "Not Safe For Work"},
-            {"TBT", "Throwback Thursday"},
-            {"TGIF", "Thank God It's Friday"}
-        };
+        private Dictionary<string, string> abbreviations = new Dictionary<string, string>();
 
         public MainWindow()
         {
             InitializeComponent();
+            LoadAbbreviationsFromCSV();
             var messagesData = ReadMessagesFromJson();
             if (messagesData != null)
             {
@@ -152,6 +131,25 @@ namespace SET09402_Software_Engineering_40509167
                 }
             }
             return $"{sortCodeSegment1:00}-{sortCodeSegment2:00}-{sortCodeSegment3:00}";
+        }
+        private void LoadAbbreviationsFromCSV()
+        {
+            string csvFilePath = @"C:\Users\SachaMiller\source\repos\SET09402-Software Engineering-SachaMiller-40509167\SET09402-Software Engineering-SachaMiller-40509167\Abbriviations.csv";
+            using (var reader = new StreamReader(csvFilePath))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                var records = csv.GetRecords<AbbreviationRecord>();
+                foreach (var record in records)
+                {
+                    abbreviations[record.Abbreviation] = record.FullForm;
+                }
+            }
+        }
+
+        public class AbbreviationRecord
+        {
+            public string Abbreviation { get; set; }
+            public string FullForm { get; set; }
         }
         private List<string> ExtractURLs(string message)
         {
