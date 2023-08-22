@@ -14,10 +14,13 @@ namespace SET09402_Software_Engineering_40509167
         private Dictionary<string, int> mentionsDictionary = new Dictionary<string, int>();
         private Dictionary<string, int> hashtagsDictionary = new Dictionary<string, int>();
         private Dictionary<string, int> quarantinedUrlsDictionary = new Dictionary<string, int>();
-        private int messageIDCounter = 100000000;
         private int sortCodeSegment1 = 0;
         private int sortCodeSegment2 = 0;
         private int sortCodeSegment3 = 0;
+        private int smsMessageIDCounter = 1;
+        private int emailMessageIDCounter = 1;
+        private int tweetMessageIDCounter = 1;
+
 
         private Dictionary<string, string> abbreviations = new Dictionary<string, string>
         {
@@ -51,10 +54,13 @@ namespace SET09402_Software_Engineering_40509167
             var messagesData = ReadMessagesFromJson();
             if (messagesData != null)
             {
-                messageIDCounter = messagesData.MessageIDCounter ?? messageIDCounter;
                 sortCodeSegment1 = messagesData.SortCodeSegment1 ?? sortCodeSegment1;
                 sortCodeSegment2 = messagesData.SortCodeSegment2 ?? sortCodeSegment2;
                 sortCodeSegment3 = messagesData.SortCodeSegment3 ?? sortCodeSegment3;
+                smsMessageIDCounter = messagesData.SmsMessageIDCounter ?? smsMessageIDCounter;
+                emailMessageIDCounter = messagesData.EmailMessageIDCounter ?? emailMessageIDCounter;
+                tweetMessageIDCounter = messagesData.TweetMessageIDCounter ?? tweetMessageIDCounter;
+
 
                 smsOutputList.Items.Clear();
                 foreach (var message in messagesData.SMSMessages)
@@ -200,7 +206,7 @@ namespace SET09402_Software_Engineering_40509167
 
             string messageType = "";
             string messageContent = "";
-            string uniqueID;
+            string uniqueID = ""; // Initialize with an empty string
             if (emailRadioButton.IsChecked == true && incidentCheckBox.IsChecked == true)
             {
                 uniqueID = "Sort Code: " + GenerateNextSortCode();
@@ -211,17 +217,20 @@ namespace SET09402_Software_Engineering_40509167
                 if (smsRadioButton.IsChecked == true)
                 {
                     prefix = "S";
+                    uniqueID = prefix + smsMessageIDCounter++.ToString("D9");
                 }
                 else if (emailRadioButton.IsChecked == true)
                 {
                     prefix = "E";
+                    uniqueID = prefix + emailMessageIDCounter++.ToString("D9");
                 }
                 else if (tweetRadioButton.IsChecked == true)
                 {
                     prefix = "T";
+                    uniqueID = prefix + tweetMessageIDCounter++.ToString("D9");
                 }
-                uniqueID = prefix + messageIDCounter++.ToString("D9");
             }
+
 
 
 
@@ -545,10 +554,12 @@ namespace SET09402_Software_Engineering_40509167
                 Mentions = mentions,
                 SIRList = sirList,
                 QuarantinedUrls = quarantinedUrls,
-                MessageIDCounter = messageIDCounter,
                 SortCodeSegment1 = sortCodeSegment1,
                 SortCodeSegment2 = sortCodeSegment2,
-                SortCodeSegment3 = sortCodeSegment3
+                SortCodeSegment3 = sortCodeSegment3,
+                SmsMessageIDCounter = smsMessageIDCounter,
+                EmailMessageIDCounter = emailMessageIDCounter,
+                TweetMessageIDCounter = tweetMessageIDCounter
             };
 
 
