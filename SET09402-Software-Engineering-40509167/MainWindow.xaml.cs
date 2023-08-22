@@ -134,7 +134,7 @@ namespace SET09402_Software_Engineering_40509167
         }
         private void LoadAbbreviationsFromCSV()
         {
-            string csvFilePath = @"C:\Users\SachaMiller\source\repos\SET09402-Software Engineering-SachaMiller-40509167\SET09402-Software Engineering-SachaMiller-40509167\Abbriviations.csv";
+            string csvFilePath = @"C:\Users\SachaMiller\source\repos\SET09402-Software Engineering-SachaMiller-40509167\SET09402-Software Engineering-SachaMiller-40509167\AbbriviationsCurrent.csv";
             using (var reader = new StreamReader(csvFilePath))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             {
