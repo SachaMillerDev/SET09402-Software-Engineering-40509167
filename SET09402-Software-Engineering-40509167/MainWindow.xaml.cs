@@ -154,6 +154,18 @@ namespace SET09402_Software_Engineering_40509167
                     // Add the URL with its count to the QuarantinedUrlsList
                     QuarantinedUrlsList.Items.Insert(0, $"{url} ({quarantinedUrlsDictionary[url]})");
                 }
+                var sortedUrls = QuarantinedUrlsList.Items.Cast<string>()
+                .OrderByDescending(item =>
+                {
+                    var parts = item.Split(' ');
+                    return parts.Length > 1 && int.TryParse(parts.Last().Trim('(', ')'), out int count) ? count : 0;
+                }).ToList();
+
+                QuarantinedUrlsList.Items.Clear();
+                foreach (var url in sortedUrls)
+                {
+                    QuarantinedUrlsList.Items.Add(url);
+                }
 
 
                 messageType = "Email:";
