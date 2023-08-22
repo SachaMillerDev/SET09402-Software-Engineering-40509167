@@ -253,6 +253,25 @@ namespace SET09402_Software_Engineering_40509167
                     }
                 }
 
+                // Now, add the new code to update the quarantinedUrlsDictionary
+                foreach (var item in importedData.QuarantinedUrls)
+                {
+                    var parts = item.Split(' ');
+                    if (parts.Length > 1 && int.TryParse(parts.Last().Trim('(', ')'), out int count))
+                    {
+                        var url = string.Join(" ", parts.Take(parts.Length - 1)); // Get the URL without the count
+                        if (quarantinedUrlsDictionary.ContainsKey(url))
+                        {
+                            quarantinedUrlsDictionary[url] += count; // Increment the count
+                        }
+                        else
+                        {
+                            quarantinedUrlsDictionary[url] = count;
+                        }
+                    }
+                }
+
+
                 // Update the hashtags dictionary with imported data
                 foreach (var item in importedData.Hashtags)
                 {
