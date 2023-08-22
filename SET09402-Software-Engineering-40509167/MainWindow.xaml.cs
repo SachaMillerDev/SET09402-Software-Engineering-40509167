@@ -530,8 +530,13 @@ namespace SET09402_Software_Engineering_40509167
 
         private void SaveMessagesToJson()
         {
-            // Extracting SMS messages
+            var existingData = ReadMessagesFromJson();
+
             var smsMessages = smsOutputList.Items.Cast<object>().Select(item => item.ToString()).ToList();
+            if (existingData?.SMSMessages != null)
+            {
+                smsMessages.AddRange(existingData.SMSMessages);
+            }
 
 
             // Extracting email messages
