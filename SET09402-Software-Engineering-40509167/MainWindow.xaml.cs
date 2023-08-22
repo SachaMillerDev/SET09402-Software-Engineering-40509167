@@ -14,7 +14,7 @@ namespace SET09402_Software_Engineering_40509167
         private Dictionary<string, int> mentionsDictionary = new Dictionary<string, int>();
         private Dictionary<string, int> hashtagsDictionary = new Dictionary<string, int>();
         private Dictionary<string, int> quarantinedUrlsDictionary = new Dictionary<string, int>();
-        private int messageIDCounter = 1;
+        private int messageIDCounter = 100000000;
         private int sortCodeSegment1 = 0;
         private int sortCodeSegment2 = 0;
         private int sortCodeSegment3 = 0;
@@ -207,8 +207,22 @@ namespace SET09402_Software_Engineering_40509167
             }
             else
             {
-                uniqueID = "ID: " + messageIDCounter++;
+                string prefix = "";
+                if (smsRadioButton.IsChecked == true)
+                {
+                    prefix = "S";
+                }
+                else if (emailRadioButton.IsChecked == true)
+                {
+                    prefix = "E";
+                }
+                else if (tweetRadioButton.IsChecked == true)
+                {
+                    prefix = "T";
+                }
+                uniqueID = prefix + messageIDCounter++.ToString("D9");
             }
+
 
 
             if (emailRadioButton.IsChecked == true)
