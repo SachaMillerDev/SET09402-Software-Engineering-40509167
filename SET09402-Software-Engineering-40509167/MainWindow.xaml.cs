@@ -340,10 +340,11 @@ namespace SET09402_Software_Engineering_40509167
         {
             foreach (var abbreviation in abbreviations)
             {
-                message = message.Replace(abbreviation.Key, abbreviation.Value);
+                message = message.Replace(abbreviation.Key, $"{abbreviation.Key} <{abbreviation.Value}>");
             }
             return message;
         }
+
 
         private void CheckForMentionsAndHashtags(string message)
         {
