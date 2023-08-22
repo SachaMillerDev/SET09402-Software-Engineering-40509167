@@ -125,7 +125,16 @@ namespace SET09402_Software_Engineering_40509167
 
             string messageType = "";
             string messageContent = "";
-            string uniqueID = "ID: " + messageIDCounter++;
+            string uniqueID;
+            if (emailRadioButton.IsChecked == true && incidentCheckBox.IsChecked == true)
+            {
+                uniqueID = "Sort Code: " + GenerateNextSortCode();
+            }
+            else
+            {
+                uniqueID = "ID: " + messageIDCounter++;
+            }
+
 
             if (emailRadioButton.IsChecked == true)
             {
