@@ -140,21 +140,21 @@ namespace SET09402_Software_Engineering_40509167
                 foreach (var url in urls)
                 {
                     emailMessage.Body = emailMessage.Body.Replace(url, "[URL Quarantined]");
-                    QuarantinedUrlsList.Items.Insert(0, url); // Add to a dedicated list
-                }
 
-                if (incidentCheckBox.IsChecked == true && incidentComboBox.SelectedIndex != -1)
-                {
-                    string sortCode = GenerateNextSortCode();
-                    if (sortCode != null)
+                    // Update the dictionary
+                    if (quarantinedUrlsDictionary.ContainsKey(url))
                     {
-                        uniqueID = "Sort Code: " + sortCode;
+                        quarantinedUrlsDictionary[url]++;
                     }
                     else
                     {
-                        return;
+                        quarantinedUrlsDictionary[url] = 1;
                     }
+
+                    // Add the URL with its count to the QuarantinedUrlsList
+                    QuarantinedUrlsList.Items.Insert(0, $"{url} ({quarantinedUrlsDictionary[url]})");
                 }
+
 
                 messageType = "Email:";
                 messageContent = $"{messageType} {uniqueID} Recipient: {emailRecipientInput.Text}; Subject: {emailSubjectInput.Text}; Body: {ExpandAbbreviations(emailMessage.Body)}";
