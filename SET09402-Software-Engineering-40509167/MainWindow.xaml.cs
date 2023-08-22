@@ -532,14 +532,14 @@ namespace SET09402_Software_Engineering_40509167
         {
             var existingData = ReadMessagesFromJson();
 
+            // SMS Messages
             var smsMessages = smsOutputList.Items.Cast<object>().Select(item => item.ToString()).ToList();
             if (existingData?.SMSMessages != null)
             {
-                smsMessages.AddRange(existingData.SMSMessages);
+                smsMessages.AddRange((List<string>)existingData.SMSMessages);
             }
 
-
-            // Extracting email messages
+            // Email Messages
             var emailMessages = emailOutputList.Items.Cast<object>().Select(item =>
             {
                 if (item is ListBoxItem listBoxItem)
@@ -548,22 +548,47 @@ namespace SET09402_Software_Engineering_40509167
                 }
                 return item as string;
             }).Where(email => !string.IsNullOrEmpty(email)).ToList();
+            if (existingData?.EmailMessages != null)
+            {
+                emailMessages.AddRange((List<string>)existingData.EmailMessages);
+            }
 
-            // Extracting tweet messages
+            // Tweet Messages
             var tweetMessages = tweetOutputList.Items.Cast<object>().Select(item => item.ToString()).ToList();
+            if (existingData?.TweetMessages != null)
+            {
+                tweetMessages.AddRange((List<string>)existingData.TweetMessages);
+            }
 
-
-            // Extracting hashtags, mentions, and SIR lists
+            // Hashtags
             var hashtags = TrendingList.Items.Cast<object>().Select(item => item.ToString()).ToList();
+            if (existingData?.Hashtags != null)
+            {
+                hashtags.AddRange((List<string>)existingData.Hashtags);
+            }
 
+            // Mentions
             var mentions = MentionsList.Items.Cast<object>().Select(item => item.ToString()).ToList();
+            if (existingData?.Mentions != null)
+            {
+                mentions.AddRange((List<string>)existingData.Mentions);
+            }
 
+            // SIR List
             var sirList = SIRList.Items.Cast<object>().Select(item => item.ToString()).ToList();
+            if (existingData?.SIRList != null)
+            {
+                sirList.AddRange((List<string>)existingData.SIRList);
+            }
 
+            // Quarantined URLs
             var quarantinedUrls = QuarantinedUrlsList.Items.Cast<object>().Select(item => item.ToString()).ToList();
+            if (existingData?.QuarantinedUrls != null)
+            {
+                quarantinedUrls.AddRange((List<string>)existingData.QuarantinedUrls);
+            }
 
-
-            // Creating the object to be serialized
+            // Create the merged data object
             var messages = new
             {
                 SMSMessages = smsMessages,
@@ -581,12 +606,12 @@ namespace SET09402_Software_Engineering_40509167
                 TweetMessageIDCounter = tweetMessageIDCounter
             };
 
-
-            // Serializing and writing to file
+            // Serialize and save the merged data
             string json = JsonConvert.SerializeObject(messages, Formatting.Indented);
             string filePath = @"C:\Users\SachaMiller\Downloads\test\messages.json";
             File.WriteAllText(filePath, json);
         }
+
 
 
 
