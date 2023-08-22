@@ -53,6 +53,15 @@ namespace SET09402_Software_Engineering_40509167
             incidentCheckBox.Visibility = Visibility.Collapsed;
             incidentComboBox.Visibility = Visibility.Collapsed;
         }
+        private dynamic ReadMessagesFromJson()
+        {
+            string filePath = @"C:\Users\SachaMiller\Downloads\test\messages.json";
+            if (!File.Exists(filePath))
+                return null;
+
+            string json = File.ReadAllText(filePath);
+            return JsonConvert.DeserializeObject(json);
+        }
 
         private string GenerateNextSortCode()
         {
