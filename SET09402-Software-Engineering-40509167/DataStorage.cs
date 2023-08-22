@@ -62,13 +62,13 @@ public class DataStorage
     //    File.WriteAllText(filePath, json);
     //}
 
-    private dynamic ReadMessagesFromJson()
-    {
-        string filePath = @"C:\Users\SachaMiller\Downloads\test\messages.json";
-        if (!File.Exists(filePath))
-            return null;
+    //    private dynamic ReadMessagesFromJson()
+    //    {
+    //        string filePath = @"C:\Users\SachaMiller\Downloads\test\messages.json";
+    //        if (!File.Exists(filePath))
+    //            return null;
 
-        string json = File.ReadAllText(filePath);
-        return JsonConvert.DeserializeObject(json);
-    }
+    //        string json = File.ReadAllText(filePath);
+    //        return JsonConvert.DeserializeObject(json);
+    //    }
 }
