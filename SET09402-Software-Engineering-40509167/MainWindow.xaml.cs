@@ -51,6 +51,11 @@ namespace SET09402_Software_Engineering_40509167
             var messagesData = ReadMessagesFromJson();
             if (messagesData != null)
             {
+                messageIDCounter = messagesData.MessageIDCounter ?? messageIDCounter;
+                sortCodeSegment1 = messagesData.SortCodeSegment1 ?? sortCodeSegment1;
+                sortCodeSegment2 = messagesData.SortCodeSegment2 ?? sortCodeSegment2;
+                sortCodeSegment3 = messagesData.SortCodeSegment3 ?? sortCodeSegment3;
+
                 smsOutputList.Items.Clear();
                 foreach (var message in messagesData.SMSMessages)
                 {
@@ -58,10 +63,23 @@ namespace SET09402_Software_Engineering_40509167
                 }
 
                 emailOutputList.Items.Clear();
-                foreach (var message in messagesData.EmailMessages)
+                foreach (var msgObj in messagesData.EmailMessages)
+
                 {
-                    emailOutputList.Items.Add(message);
+                    string msgString = msgObj.ToString();
+                    if (msgString.Contains("Incident Type:"))
+                    {
+                        ListBoxItem listItem = new ListBoxItem();
+                        listItem.Content = msgObj;
+                        listItem.Background = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 230, 230));
+                        emailOutputList.Items.Add(listItem);
+                    }
+                    else
+                    {
+                        emailOutputList.Items.Add(msgObj);
+                    }
                 }
+
 
                 tweetOutputList.Items.Clear();
                 foreach (var message in messagesData.TweetMessages)
@@ -511,8 +529,13 @@ namespace SET09402_Software_Engineering_40509167
                 Hashtags = hashtags,
                 Mentions = mentions,
                 SIRList = sirList,
-                QuarantinedUrls = quarantinedUrls
+                QuarantinedUrls = quarantinedUrls,
+                MessageIDCounter = messageIDCounter,
+                SortCodeSegment1 = sortCodeSegment1,
+                SortCodeSegment2 = sortCodeSegment2,
+                SortCodeSegment3 = sortCodeSegment3
             };
+
 
             // Serializing and writing to file
             string json = JsonConvert.SerializeObject(messages, Formatting.Indented);
