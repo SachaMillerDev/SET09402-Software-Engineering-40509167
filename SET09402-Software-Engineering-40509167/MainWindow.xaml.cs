@@ -9,6 +9,7 @@ using System.IO;
 using System.IO;
 using System.Globalization;
 using CsvHelper;
+using System.Reflection.PortableExecutable;
 
 
 namespace SET09402_Software_Engineering_40509167
@@ -144,7 +145,9 @@ namespace SET09402_Software_Engineering_40509167
                     abbreviations[record.Abbreviation] = record.FullForm;
                 }
             }
+            reader.Close();  // Explicitly close the StreamReader
         }
+
 
         public class AbbreviationRecord
         {
