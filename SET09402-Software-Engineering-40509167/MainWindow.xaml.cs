@@ -547,16 +547,7 @@ namespace SET09402_Software_Engineering_40509167
 
         private void SaveMessagesToJson()
         {
-            var existingData = ReadMessagesFromJson();
-
-            // SMS Messages
             var smsMessages = smsOutputList.Items.Cast<object>().Select(item => item.ToString()).ToList();
-            if (existingData?.SMSMessages != null)
-            {
-                smsMessages.AddRange((List<string>)existingData.SMSMessages);
-            }
-
-            // Email Messages
             var emailMessages = emailOutputList.Items.Cast<object>().Select(item =>
             {
                 if (item is ListBoxItem listBoxItem)
@@ -565,47 +556,13 @@ namespace SET09402_Software_Engineering_40509167
                 }
                 return item as string;
             }).Where(email => !string.IsNullOrEmpty(email)).ToList();
-            if (existingData?.EmailMessages != null)
-            {
-                emailMessages.AddRange((List<string>)existingData.EmailMessages);
-            }
 
-            // Tweet Messages
             var tweetMessages = tweetOutputList.Items.Cast<object>().Select(item => item.ToString()).ToList();
-            if (existingData?.TweetMessages != null)
-            {
-                tweetMessages.AddRange((List<string>)existingData.TweetMessages);
-            }
-
-            // Hashtags
             var hashtags = TrendingList.Items.Cast<object>().Select(item => item.ToString()).ToList();
-            if (existingData?.Hashtags != null)
-            {
-                hashtags.AddRange((List<string>)existingData.Hashtags);
-            }
-
-            // Mentions
             var mentions = MentionsList.Items.Cast<object>().Select(item => item.ToString()).ToList();
-            if (existingData?.Mentions != null)
-            {
-                mentions.AddRange((List<string>)existingData.Mentions);
-            }
-
-            // SIR List
             var sirList = SIRList.Items.Cast<object>().Select(item => item.ToString()).ToList();
-            if (existingData?.SIRList != null)
-            {
-                sirList.AddRange((List<string>)existingData.SIRList);
-            }
-
-            // Quarantined URLs
             var quarantinedUrls = QuarantinedUrlsList.Items.Cast<object>().Select(item => item.ToString()).ToList();
-            if (existingData?.QuarantinedUrls != null)
-            {
-                quarantinedUrls.AddRange((List<string>)existingData.QuarantinedUrls);
-            }
 
-            // Create the merged data object
             MessagesData messages = new MessagesData
             {
                 SMSMessages = smsMessages,
@@ -623,12 +580,10 @@ namespace SET09402_Software_Engineering_40509167
                 TweetMessageIDCounter = tweetMessageIDCounter
             };
 
-            // Serialize and save the merged data
             string json = JsonConvert.SerializeObject(messages, Formatting.Indented);
             string filePath = @"C:\Users\SachaMiller\Downloads\test\messages.json";
             File.WriteAllText(filePath, json);
         }
-
 
 
 
