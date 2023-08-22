@@ -52,7 +52,9 @@
                 <ComboBoxItem Content="Cash Loss"/>
             </ComboBox>
             <TextBox x:Name="messageInput" Text="Body here" Height="289" TextWrapping="Wrap" Foreground="Gray" GotFocus="TextBox_GotFocus" LostFocus="TextBox_LostFocus" Margin="0,0,0,10"/>
-            <Button x:Name="sendButton" Content="Send" Click="SendButton_Click" Height="40"/>
+            <Button x:Name="sendButton" Content="Process" Click="SendButton_Click" Height="40"/>
+            <Button x:Name="importJsonButton" Content="Import JSON" Click="ImportJsonButton_Click" Height="40"/>
+
         </StackPanel>
 
         <!-- Output window with Tabs -->

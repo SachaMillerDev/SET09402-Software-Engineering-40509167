@@ -9,6 +9,8 @@ using System.IO;
 using System.Globalization;
 using CsvHelper;
 using System.Reflection.PortableExecutable;
+using Microsoft.Win32;
+
 
 
 namespace SET09402_Software_Engineering_40509167
@@ -148,6 +150,17 @@ namespace SET09402_Software_Engineering_40509167
             }
             return $"{sortCodeSegment1:00}-{sortCodeSegment2:00}-{sortCodeSegment3:00}";
         }
+        private void ImportJsonButton_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "JSON files (*.json)|*.json|All files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                string jsonContent = File.ReadAllText(openFileDialog.FileName);
+                // TODO: Add the JSON content to your program's JSON data.
+            }
+        }
+
         private void LoadAbbreviationsFromCSV()
         {
             string csvFilePath = @"C:\Users\SachaMiller\source\repos\SET09402-Software Engineering-SachaMiller-40509167\SET09402-Software Engineering-SachaMiller-40509167\AbbriviationsCurrent.csv";
