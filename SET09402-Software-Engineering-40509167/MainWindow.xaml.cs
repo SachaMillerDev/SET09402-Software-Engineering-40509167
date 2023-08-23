@@ -756,7 +756,7 @@ namespace SET09402_Software_Engineering_40509167
             };
 
             string json = JsonConvert.SerializeObject(messages, Formatting.Indented);
-            string filePath = @"C:\Users\SachaMiller\Downloads\test\messages.json";
+            string filePath = @"C:\Users\SachaMiller\source\repos\SET09402-Software Engineering-SachaMiller-40509167\SET09402-Software Engineering-SachaMiller-40509167\JSON-test-file\messages.json";
             File.WriteAllText(filePath, json);
         }
 
