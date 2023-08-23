@@ -1,0 +1,45 @@
+{
+  "SMSMessages": [
+    "SMS: S000000003 Phone Number: 55555555555555; Message: test ",
+    "SMS: S000000002 Phone Number: +7777777777777; Message: Test LOL <Laughing out loud> BRB <Be right back> ",
+    "SMS: S000000001 Phone Number: 66666666666666; Message: Test ",
+    "SMS: S000000000 Phone Number: 55555555555555; Message: Test Data LOL <Laughing out loud> "
+  ],
+  "EmailMessages": [
+    "Email: Sort Code: 00-00-04 Recipient: test@gmail.com; Subject: test; Body: tst [UR <Your / You're>L <Real life> Quarantined]; Incident Type: ATM Theft",
+    "Email: E000000001 Recipient: test@gmail.com; Subject: test ; Body: test [UR <Your / You're>L <Real life> Quarantined] [UR <Your / You're>L <Real life> Quarantined]",
+    "Email: Sort Code: 00-00-03 Recipient: test@gmail.com; Subject: xxxxxxxxxxxxxxxxxxxx; Body: Test ; Incident Type: Theft",
+    "Email: E000000000 Recipient: Test@gmail.com; Subject: TEst ; Body: Test subject for the import [UR <Your / You're>L <Real life> Quarantined]",
+    "Email: Sort Code: 00-00-02 Recipient: Test@gmail.com; Subject: tets ; Body: Test data ; Incident Type: Theft",
+    "Email: Sort Code: 00-00-01 Recipient: Test@gmail.com; Subject: test subject ; Body: Test content [UR <Your / You're>L <Real life> Quarantined]; Incident Type: Theft"
+  ],
+  "TweetMessages": [
+    "Tweet: T000000002 Username: @mike; Message: @mike #crazy",
+    "Tweet: T000000001 Username: @mike ; Message: test #crazy #LIT @mike @tim",
+    "Tweet: T000000000 Username: @test; Message: @mike @mike @timmy #crazy #crazy #crazy #wild"
+  ],
+  "Hashtags": [
+    "#crazy (5)",
+    "#wild (1)",
+    "#LIT (1)"
+  ],
+  "Mentions": [
+    "@mike (4)",
+    "@timmy (1)",
+    "@tim (1)"
+  ],
+  "SIRList": [
+    "Theft 3",
+    "ATM Theft 1"
+  ],
+  "QuarantinedUrls": [
+    "www.google.com (3)",
+    "www.bing.com (2)"
+  ],
+  "SortCodeSegment1": 0,
+  "SortCodeSegment2": 0,
+  "SortCodeSegment3": 4,
+  "SmsMessageIDCounter": 4,
+  "EmailMessageIDCounter": 2,
+  "TweetMessageIDCounter": 3
+}

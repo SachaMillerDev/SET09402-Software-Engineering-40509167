@@ -1,0 +1,33 @@
+{
+  "SMSMessages": [
+    "SMS: S000000000 Phone Number: 55555555555555; Message: Test Data LOL <Laughing out loud> "
+  ],
+  "EmailMessages": [
+    "Email: E000000000 Recipient: Test@gmail.com; Subject: TEst ; Body: Test subject for the import [UR <Your / You're>L <Real life> Quarantined]",
+    "Email: Sort Code: 00-00-02 Recipient: Test@gmail.com; Subject: tets ; Body: Test data ; Incident Type: Theft",
+    "Email: Sort Code: 00-00-01 Recipient: Test@gmail.com; Subject: test subject ; Body: Test content [UR <Your / You're>L <Real life> Quarantined]; Incident Type: Theft"
+  ],
+  "TweetMessages": [
+    "Tweet: T000000000 Username: @test; Message: @mike @mike @timmy #crazy #crazy #crazy #wild"
+  ],
+  "Hashtags": [
+    "#crazy (3)",
+    "#wild (1)"
+  ],
+  "Mentions": [
+    "@mike (2)",
+    "@timmy (1)"
+  ],
+  "SIRList": [
+    "Theft 2"
+  ],
+  "QuarantinedUrls": [
+    "www.google.com (2)"
+  ],
+  "SortCodeSegment1": 0,
+  "SortCodeSegment2": 0,
+  "SortCodeSegment3": 2,
+  "SmsMessageIDCounter": 2,
+  "EmailMessageIDCounter": 1,
+  "TweetMessageIDCounter": 1
+}
