@@ -123,7 +123,7 @@ namespace SET09402_Software_Engineering_40509167
         }
         private MessagesData ReadMessagesFromJson()
         {
-            string filePath = @"C:\Users\SachaMiller\source\repos\SET09402-Software Engineering-SachaMiller-40509167\SET09402-Software Engineering-SachaMiller-40509167\JSON-test-file\messages.json";
+            string filePath = @"C:\Users\SachaMiller\source\repos\SET09402-Software Engineering-SachaMiller-40509167\SET09402-Software Engineering-SachaMiller-40509167\JSON-test-file\messages.json";//update this path acourdingly 
             if (!File.Exists(filePath)) return null;
             string json = File.ReadAllText(filePath);
             return JsonConvert.DeserializeObject<MessagesData>(json);
@@ -756,7 +756,7 @@ namespace SET09402_Software_Engineering_40509167
             };
 
             string json = JsonConvert.SerializeObject(messages, Formatting.Indented);
-            string filePath = @"C:\Users\SachaMiller\source\repos\SET09402-Software Engineering-SachaMiller-40509167\SET09402-Software Engineering-SachaMiller-40509167\JSON-test-file\messages.json";
+            string filePath = @"C:\Users\SachaMiller\source\repos\SET09402-Software Engineering-SachaMiller-40509167\SET09402-Software Engineering-SachaMiller-40509167\JSON-test-file\messages.json";//update this path acourdingly 
             File.WriteAllText(filePath, json);
         }
 
