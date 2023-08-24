@@ -253,7 +253,6 @@ namespace SET09402_Software_Engineering_40509167
                     }
                 }
 
-                // Now, add the new code to update the quarantinedUrlsDictionary
                 foreach (var item in importedData.QuarantinedUrls)
                 {
                     var parts = item.Split(' ');
@@ -347,7 +346,7 @@ namespace SET09402_Software_Engineering_40509167
                     MessageBox.Show("Invalid phone number. Ensure it's numeric and up to 14 characters.");
                     return;
                 }
-                // New SMS Message Body Validation
+                // SMS Message Body Validation
                 if (messageInput.Text.Length > 140)
                 {
                     MessageBox.Show("SMS message body should be a maximum of 140 characters long.");
@@ -363,7 +362,7 @@ namespace SET09402_Software_Engineering_40509167
                     MessageBox.Show("Invalid username. It should start with '@' and be up to 15 characters.");
                     return;
                 }
-                // New Tweet Message Body Validation
+                // Tweet Message Body Validation
                 if (messageInput.Text.Length > 140)
                 {
                     MessageBox.Show("Tweet message body should be a maximum of 140 characters long.");
